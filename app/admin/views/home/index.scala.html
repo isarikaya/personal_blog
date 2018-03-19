@@ -1,0 +1,76 @@
+
+@afterScripts = {
+	<script>
+		$(document).ready(function () {
+        $.ajax({
+            type: 'GET',
+            url: '/admin/article',
+            success: function (data) {
+            	$('#article').html(data);
+            }
+        });
+        });
+    
+	</script>
+	
+  </script>}@admin.views.html.layout.main("Welcome to Play!") {
+  <div class="col-lg-3 col-md-6">
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <div class="row">
+                <div class="col-xs-3">
+                    <i class="fa fa-terminal fa-5x"></i>
+                </div>
+                <div class="col-xs-9 text-right">
+                    <div id="article" class="huge">0</div>
+                    <strong>Makaleler</strong>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+  <div class="col-lg-3 col-md-6">
+    <div class="panel panel-green">
+        <div class="panel-heading">
+            <div class="row">
+                <div class="col-xs-3">
+                    <i class="fa fa-bars fa-5x"></i>
+                </div>
+                <div class="col-xs-9 text-right">
+                    <div class="huge">41</div>
+                    <strong>Alt kategoriler</strong>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="col-lg-3 col-md-6">
+  <div class="panel panel-yellow">
+      <div class="panel-heading">
+          <div class="row">
+              <div class="col-xs-3">
+                  <i class="fa fa-users fa-5x"></i>
+              </div>
+              <div class="col-xs-9 text-right">
+                  <div class="huge">1</div>
+                  <strong>Kullanıcılar</strong>
+              </div>
+          </div>
+      </div>
+  </div>
+</div>
+<div class="col-lg-3 col-md-6">
+  <div class="panel panel-red">
+      <div class="panel-heading">
+          <div class="row">
+              <div class="col-xs-3">
+                  <i class="fa fa-rocket fa-5x"></i>
+              </div>
+              <div class="col-xs-9 text-right">
+                  <div class="huge">98</div>
+                  <strong>Takipçiler</strong>
+              </div>
+          </div>
+      </div>
+</div>
+}(afterScripts)

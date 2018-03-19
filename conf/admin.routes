@@ -1,0 +1,20 @@
+GET    /                        admin.controllers.AdminHomeController.index
+GET    /article                 admin.controllers.AdminHomeController.article
+
+POST   /blog/insertPost         admin.controllers.BlogController.insertPost
+GET    /category/dropdownList   admin.controllers.BlogController.dropdownList
+GET    /blog/list               admin.controllers.BlogController.list
+POST   /blog/source             admin.controllers.BlogController.source
+GET    /blog/edit/:ID           admin.controllers.BlogController.edit(ID: Long)
+POST   /blog/editt              admin.controllers.BlogController.editt
+GET    /blog/remove/:ID         admin.controllers.BlogController.remove(ID: Long)
+POST   /category/insertPost     admin.controllers.CategoryController.insertPost
+GET    /category/dropdownList   admin.controllers.CategoryController.dropdownList
+GET    /category/list           admin.controllers.CategoryController.list
+POST   /category/source         admin.controllers.CategoryController.source
+GET    /category/update/:ID     admin.controllers.CategoryController.update(ID: Long)
+POST   /category/updatee        admin.controllers.CategoryController.updatee
+GET    /category/delete/:ID     admin.controllers.CategoryController.delete(ID: Long)
+GET    /account/login           admin.controllers.LoginController.login
+POST   /account/postLogin       admin.controllers.LoginController.postLogin
+GET    /account/logout          admin.controllers.LoginController.logout
