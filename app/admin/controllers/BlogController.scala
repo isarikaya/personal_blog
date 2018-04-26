@@ -18,6 +18,9 @@ import java.util.regex.Pattern
 import compositions.AuthAction
 import transfers.BlogDTO
 import tools._
+import com.sksamuel.scrimage.Image
+import java.io.File
+import com.sksamuel.scrimage.nio.JpegWriter
 
 @Singleton
 class BlogController @Inject() (auth: AuthAction, cc: ControllerComponents) extends AbstractController(cc) {
@@ -33,16 +36,20 @@ class BlogController @Inject() (auth: AuthAction, cc: ControllerComponents) exte
         BadRequest(Json.toJson(result))
       },
       data => {
+        
         var filePath = ""
         request.body.file("picture").map { picture =>
           val filename = Paths.get(picture.filename).getFileName
-          val deneme = picture.filename.split(Pattern.quote("."))(1)
+          val ext = picture.filename.split(Pattern.quote("."))(1)
           val now = DateTime.now
-          val name = now.getYear.toString() + now.getMonthOfYear.toString() + now.getDayOfMonth.toString() + now.getHourOfDay.toString() + now.getMinuteOfHour.toString() + now.getMillisOfSecond.toString()        
-          filePath = s"/pictures/" + "img_" + name + "." + deneme
-          picture.ref.moveTo(Paths.get(Play.current.path + filePath), replace = true)
+          val name = now.getYear.toString() + now.getMonthOfYear.toString() + now.getDayOfMonth.toString() + now.getHourOfDay.toString() + now.getMinuteOfHour.toString() + now.getMillisOfSecond.toString()
+          filePath = s"/pictures/" + "img_" + name
+          val nwFileName = filePath + "." + ext
+          picture.ref.moveTo(Paths.get(Play.current.path + nwFileName), replace = true)
+          implicit val writer = JpegWriter().withCompression(50)
+          Image.fromPath(Paths.get(Play.current.path + nwFileName)).scaleToWidth(150).output(new File(Play.current.path + filePath + "_150." + ext))
         }
-        val seoUrl = seo seoTitle(data.Name)
+        val seoUrl = seo seoTitle (data.Name)
         val newBlog = new BlogET(0, data.Name, data.Label, data.Content, filePath, true, DateTime.now.getMillis, 0, seoUrl)
         val res = BlogDb.Blogs.Insert(newBlog).Save
         result.IsSuccess = true
