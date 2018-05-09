@@ -36,28 +36,31 @@ class BlogController @Inject() (auth: AuthAction, cc: ControllerComponents) exte
         BadRequest(Json.toJson(result))
       },
       data => {
-        
-        var filePath = ""
+        val filePath = "/public/pictures/"
+        var fileName = ""
+        var fileExt = ""
         request.body.file("picture").map { picture =>
           val filename = Paths.get(picture.filename).getFileName
-          val ext = picture.filename.split(Pattern.quote("."))(1)
+          fileExt = "." + picture.filename.split(Pattern.quote("."))(1)
           val now = DateTime.now
           val name = now.getYear.toString() + now.getMonthOfYear.toString() + now.getDayOfMonth.toString() + now.getHourOfDay.toString() + now.getMinuteOfHour.toString() + now.getMillisOfSecond.toString()
-          filePath = s"/pictures/" + "img_" + name
-          val nwFileName = filePath + "." + ext
-          picture.ref.moveTo(Paths.get(Play.current.path + nwFileName), replace = true)
+          fileName = "img_" + name
+          picture.ref.moveTo(Paths.get(Play.current.path + filePath + fileName + fileExt), replace = true)
           implicit val writer = JpegWriter().withCompression(50)
-          Image.fromPath(Paths.get(Play.current.path + nwFileName)).scaleToWidth(150).output(new File(Play.current.path + filePath + "_150." + ext))
+          Image.fromPath(Paths.get(Play.current.path + filePath + fileName + fileExt)).scaleToWidth(150)
+            .output(new File(Play.current.path + filePath + fileName + "_150" + fileExt))
         }
         val seoUrl = seo seoTitle (data.Name)
-        val newBlog = new BlogET(0, data.Name, data.Label, data.Content, filePath, true, DateTime.now.getMillis, 0, seoUrl)
+        val newBlog = new BlogET(0, data.Name, data.Label, data.Content,
+          filePath.replace("public", "assets") + fileName + fileExt,
+          filePath.replace("public", "assets") + fileName + "_150" + fileExt,
+          true, DateTime.now.getMillis, 0, seoUrl)
         val res = BlogDb.Blogs.Insert(newBlog).Save
         result.IsSuccess = true
         BlogDb.BlogCategories.Insert(new BlogCategoryET(0, res, data.cid)).Save
         if (res > 0) {
           notify.Status = "success"
           notify.Message = "Kayıt Başarı İle Gerçekleştirildi"
-
         } else {
           notify.Status = "warning"
           notify.Message = "Şuan da bu işlem gerçekleştirilemiyor"
@@ -74,7 +77,6 @@ class BlogController @Inject() (auth: AuthAction, cc: ControllerComponents) exte
   def list() = auth { implicit request: Request[AnyContent] =>
     Ok(admin.views.html.blog.list())
   }
-
   def source = Action { implicit request =>
     implicit val js = Json.format[BlogET]
     val sside = new ServerSide()
@@ -168,11 +170,14 @@ class BlogController @Inject() (auth: AuthAction, cc: ControllerComponents) exte
         var filePath = ""
         request.body.file("picture").map { picture =>
           val filename = Paths.get(picture.filename).getFileName
-          val deneme = picture.filename.split(Pattern.quote("."))(1)
+          val ext = picture.filename.split(Pattern.quote("."))(1)
           val now = DateTime.now
           val name = now.getYear.toString() + now.getMonthOfYear.toString() + now.getDayOfMonth.toString() + now.getHourOfDay.toString() + now.getMinuteOfHour.toString() + now.getMillisOfSecond.toString()
-          filePath = s"/pictures/" + "img_" + name + "." + deneme
-          picture.ref.moveTo(Paths.get(Play.current.path + filePath), replace = true)
+          filePath = s"/public/pictures/" + "img_" + name
+          val nwFileName = filePath + "." + ext
+          picture.ref.moveTo(Paths.get(Play.current.path + nwFileName), replace = true)
+          implicit val writer = JpegWriter().withCompression(50)
+          Image.fromPath(Paths.get(Play.current.path + nwFileName)).scaleToWidth(150).output(new File(Play.current.path + filePath + "_150." + ext))
         }
         val blog = BlogDb.Blogs.table.filter(x => x.ID === data.ID).result.headOption.Save //
         if (blog.isDefined) {

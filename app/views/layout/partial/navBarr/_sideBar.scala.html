@@ -1,4 +1,7 @@
-@(blogs: Seq[entities.BlogET])
+@(latest: Seq[entities.BlogET], trend: Seq[entities.BlogET], tags: Seq[String], category: Seq[(String, Int)])
+
+@import views.DateExtension._
+
 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-4 sidebar-warp columns">
         <div class="row">
             <div class="col-md-12 col-sm-12 col-lg-12 col-xs-12 columns md-mt-40">
@@ -7,9 +10,9 @@
                         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                             <div class="zm-posts-tab-menu">
                                 <ul class="nav nav-tabs">
-                                    <li class="active"><a data-toggle="tab" href="#latest_posts">Son makaleler</a></li>
-                                    <li><a data-toggle="tab" href="#comments_posts">Yorumlar</a></li>
-                                    <li><a data-toggle="tab" href="#trending_posts">Popüler </a></li>
+                                    <li class="active"><a data-toggle="tab" href="#latest_posts">Son Yazılar</a></li>
+                                    <!--<li><a data-toggle="tab" href="#comments_posts">Yorumlar</a></li>-->
+                                    <li><a data-toggle="tab" href="#trending_posts">Popüler Makaleler</a></li>
                                 </ul>
                             </div>
                         </div>
@@ -17,33 +20,31 @@
                     <div class="row">
                         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                             <div class="zm-posts-tab-content tab-content">
-                                <!-- Start Latest Posts -->
                                 <div id="latest_posts" class="zm-posts tab-pane fade in active">
-                                    <!-- Start single post layout E -->
+                                
+                                 @for(Blog <- latest){
                                     <article class="zm-post-lay-e zm-single-post clearfix">
                                         <div class="zm-post-thumb f-left">
-                                            <a href="blog-single-image.html"><img src="assets/frontend/blog/blogs/images/post/e/1.jpg" alt="img"></a>
+                                            <a href="@Blog.blogUrl"><img src="@Blog.thumbImage" alt="@Blog.blogLabel"></a>
                                         </div>
                                         <div class="zm-post-dis f-right">
                                             <div class="zm-post-header">
-                                                <h2 class="zm-post-title"><a href="blog-single-image.html">Magna aliqua ut enim ad minim veniam quis nostrud.</a></h2>
+                                                <h2 class="zm-post-title"><a href="@Blog.blogUrl">@Blog.blogName</a></h2>
                                                 <div class="zm-post-meta">
                                                     <ul>
-                                                        <li class="s-meta"><a href="#" class="zm-author">Thomson Smith</a></li>
-                                                        <li class="s-meta"><a href="#" class="zm-date">April 18, 2016</a></li>
-                                                        @for(Blog <- blogs){
-                                                        	<li class="s-meta"><a href="#" class="zm-author">@Blog.blogName</a></li>
-                                                        }
+                                                        <li class="s-meta"><a href="#" class="zm-author"><i class="fa fa-eye"></i>@Blog.clickCount</a></li>
+                                                        <li class="s-meta"><a href="#" class="zm-date">@Blog.date.toDateString</a></li>
                                                     </ul>
                                                 </div>
                                             </div>
                                         </div>
                                     </article>
-                                                                        <!-- Start single post layout E -->
+                                     }
                                 </div>
-                                <!-- End Latest Posts -->
+                            
+                                <!-- End Latest Posts 
                                 <div id="comments_posts" class="zm-posts tab-pane fade">
-                                    <!-- Start single post layout E -->
+                                    <!-- Start single post layout E 
                                     <article class="zm-post-lay-e zm-single-post clearfix">
                                         <div class="zm-post-thumb f-left">
                                             <a href="blog-single-image.html"><img src="assets/frontend/blog/blogs/images/post/e/1.jpg" alt="img"></a>
@@ -62,26 +63,28 @@
                                     </article>
                                     
                                 </div>
-                                <!-- End Comments Posts -->
+                                 End Comments Posts -->
                                 <!-- Start Trending Posts -->
                                 <div id="trending_posts" class="zm-posts tab-pane fade">
                                     <!-- Start single post layout E -->
+                                    @for(Blog <- trend){
                                     <article class="zm-post-lay-e zm-single-post clearfix">
                                         <div class="zm-post-thumb f-left">
-                                            <a href="blog-single-image.html"><img src="assets/frontend/blog/blogs/images/post/e/1.jpg" alt="img"></a>
+                                            <a href="@Blog.blogUrl"><img src="@Blog.thumbImage" alt="@Blog.blogLabel"></a>
                                         </div>
                                         <div class="zm-post-dis f-right">
                                             <div class="zm-post-header">
-                                                <h2 class="zm-post-title"><a href="blog-single-image.html">Enim ad minim veniam nostrud xercitation ullamco.</a></h2>
+                                                <h2 class="zm-post-title"><a href="@Blog.blogUrl">@Blog.blogName</a></h2>
                                                 <div class="zm-post-meta">
                                                     <ul>
-                                                        <li class="s-meta"><a href="#" class="zm-author">Thomson Smith</a></li>
-                                                        <li class="s-meta"><a href="#" class="zm-date">April 18, 2016</a></li>
+                                                        <li class="s-meta"><a href="#" class="zm-author"><i class="fa fa-eye"></i>@Blog.clickCount</a></li>
+                                                        <li class="s-meta"><a href="#" class="zm-date">@Blog.date.toDateString</a></li>
                                                     </ul>
                                                 </div>
                                             </div>
                                         </div>
                                     </article>
+                                    }
                                 </div>
                                 <!-- End Trending Posts -->
                             </div>
@@ -94,7 +97,7 @@
                 <div class="row mt-70">
                     <div class="col-md-12 col-sm-12 col-lg-12 sm-mt-60 columns">
                         <aside class="subscribe-form bg-dark text-center sidebar">
-                            <h3 class="uppercase zm-post-title">Get Email Updates</h3>
+                            <h3 class="uppercase zm-post-title">Yenilikleri Öğren</h3>
                             <p>Join 80,000+ awesome subscribers and update yourself with our exclusive news.</p>
                             <form action="#">
                                 <input placeholder="Enter your full name" type="text">
@@ -106,7 +109,6 @@
                 </div>
             </div>
             <!-- abone ol bitişi-->
-
             <aside class="zm-tagcloud-list col-xs-12 col-md-12 col-sm-12 col-lg-12 columns">
                 <div class="row mt-70">
                     <div class="col-md-12 col-sm-12 col-lg-12 sm-mt-60 columns">
@@ -118,40 +120,9 @@
                 <div class="row mt-40">
                     <div class="col-md-12 col-sm-12 col-lg-12 sm-mt-60 columns">
                         <div class="zm-tagcloud">
-                            <a href="#">Business</a>
-                            <a href="#">Technology</a>
-                            <a href="#">Sprot</a>
-                            <a href="#">Art</a>
-                            <a href="#">Sprot</a>
-                            <a href="#">Lifestyle</a>
-                            <a href="#">Three</a>
-                            <a href="#">Typhography</a>
-                            <a href="#">Education</a>
-                            <a href="#">Technology</a>
-                            <a href="#">Sprot</a>
-                            <a href="#">Lifestyle</a>
-                            <a href="#">Art</a>
-                            <a href="#">Sprot</a>
-                            <a href="#">Three</a>
-                            <a href="#">Typhography</a>
-                            <a href="#">Education</a>
-                            <a href="#">Business</a>
-                            <a href="#">Technology</a>
-                            <a href="#">Sprot</a>
-                            <a href="#">Art</a>
-                            <a href="#">Sprot</a>
-                            <a href="#">Lifestyle</a>
-                            <a href="#">Three</a>
-                            <a href="#">Typhography</a>
-                            <a href="#">Education</a>
-                            <a href="#">Technology</a>
-                            <a href="#">Sprot</a>
-                            <a href="#">Lifestyle</a>
-                            <a href="#">Art</a>
-                            <a href="#">Sprot</a>
-                            <a href="#">Three</a>
-                            <a href="#">Typhography</a>
-                            <a href="#">Education</a>
+                        @for(tag <- tags) {
+                           <a href="/etiket/@tag">@tag</a>
+                        }
                         </div>
                     </div>
                 </div>
@@ -199,11 +170,9 @@
             </div>
         </div>
         <div class="list-group">
-            <button type="button" class="list-group-item">Cras justo odio<span class="badge">10</span></button>
-            <button type="button" class="list-group-item">Dapibus ac facilisis in<span class="badge">25</span></button>
-            <button type="button" class="list-group-item">Morbi leo risus<span class="badge">9</span></button>
-            <button type="button" class="list-group-item">Porta ac consectetur ac<span class="badge">15</span></button>
-            <button type="button" class="list-group-item">Vestibulum at eros<span class="badge">16</span></button>
+        @for(Category <- category){
+            <button type="button" class="list-group-item">@Category._1<span class="badge">@Category._2</span></button>
+            }
         </div>
         <div class="row mt-10 hidden-md">
             <div class="col-md-12  col-sm-12 col-lg-12 col-xs-12 columns xs-mt-40">
@@ -217,11 +186,12 @@
             </div>
         </div>
         <aside class="subscribe-form text-center sidebar">
-            <h3 class="uppercase zm-post-title">Bana SOru SOR</h3>
+            <h3 class="uppercase zm-post-title">BANA SORU SOR</h3>
             <p>Proje ve sorunlarına yardımcı olabilmem için buradan bana hızlı bir şekilde soru sorabilirsin. :)
+            Not: Konu başlığını belirtmeniz yeterli en geç 2 gün içinde geri dönüş yapıyorum.
             </p>
             <form action="#">
-                <input placeholder="isim" type="text">
+                <input placeholder="Sorun nedir ?" type="text">
                 <input placeholder="Email" type="email">
                 <input value="SOR" type="submit">
             </form>
