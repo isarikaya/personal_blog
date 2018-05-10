@@ -186,13 +186,14 @@
             </div>
         </div>
         <aside class="subscribe-form text-center sidebar">
-            <h3 class="uppercase zm-post-title">BANA SORU SOR</h3>
+            <h3 class="uppercase zm-post-title">Soru sor</h3>
             <p>Proje ve sorunlarına yardımcı olabilmem için buradan bana hızlı bir şekilde soru sorabilirsin. :)
             Not: Konu başlığını belirtmeniz yeterli en geç 2 gün içinde geri dönüş yapıyorum.
             </p>
-            <form action="#">
-                <input placeholder="Sorun nedir ?" type="text">
-                <input placeholder="Email" type="email">
+            <form role="form" method="POST" action="/question/insert">
+           	    <input type="hidden" name="ID">
+                <input name ="questionTitle" placeholder="Sorun nedir ? " type="text">
+                <input name ="questionContent" placeholder="Email" type="text">
                 <input value="SOR" type="submit">
             </form>
         </aside>
