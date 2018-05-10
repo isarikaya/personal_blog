@@ -6,11 +6,12 @@ import entities.BlogDb._
 import entities._
 import slick.driver.MySQLDriver.api._
 import scala.collection.mutable.ListBuffer
+import transfers.HeaderDTO
 
 object HtmlRender {
   def sideBar(): Html = {
     var storedTags: Seq[String] = Seq()
-
+    val menu = BlogDb.Categories.table.sortBy(x => x.categoryName.desc).take(5).result.Save
     val latest = BlogDb.Blogs.table.sortBy(x => x.date.desc).take(5).result.Save
     val trend = BlogDb.Blogs.table.sortBy(x => x.clickCount.desc).take(5).result.Save
     val blog = BlogDb.Blogs.table.sortBy(x => x.date).result.Save
@@ -32,5 +33,13 @@ object HtmlRender {
     })
     return views.html.layout.partial.navBarr._sideBar(latest, trend, storedTags, catBlogCount)
   }
+  def header(): Html = {
+    val menu = BlogDb.Categories.table.filter(x => !x.parentid.isDefined)
+    .result.Save.map(category => new HeaderDTO {
+      Category = category
+      SubCategories = BlogDb.Categories.table
+        .filter(x=> x.parentid === category.ID).result.Save
+    })
+    return views.html.layout.partial.navBarr._header(menu)
+  }
 }
-/*en son yaptıgım hali bu abi birde ubuntu da discord abi  */

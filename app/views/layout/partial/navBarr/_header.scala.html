@@ -1,4 +1,4 @@
-@(param: Any)
+@(menu: Seq[transfers.HeaderDTO])
 <header class="header-area header-wrapper bg-white clearfix">
             <div class="header-top-bar bg-dark ptb-10">
                 <div class="container">
@@ -97,16 +97,15 @@
                                             <nav class="primary-menu uppercase">
                                                 <ul class="clearfix">
                                                     <li class="current drop"><a href="/">Anasayfa</a>
-                                                    <li class="drop"><a href="#">Blog</a>
+                                                    @for(dto <- menu){
+                                                    <li class="drop"><a href="#">@dto.Category.categoryName</a>
                                                         <ul class="dropdown">
-                                                            <li><a href="blog-single-image.html">Single Blog image 1</a></li>
-                                                            <li><a href="blog-single-image-2.html">Single Blog image 2</a></li>
-                                                            <li><a href="blog-single-video.html">Single Blog Video 1</a></li>
-                                                            <li><a href="blog-single-video-2.html">Single Blog Video 2</a></li>
-                                                            <li><a href="blog-single-audio.html">Single Blog Audio 1</a></li>
-                                                            <li><a href="blog-single-audio-2.html">Single Blog Audio 2</a></li>
+                                                        	@for(subCategory <- dto.SubCategories) {
+                                                        		<li><a href="blog-single-image.html">@subCategory.categoryName</a></li>
+                                                        	}
                                                         </ul>
                                                     </li>
+                                                    }
                                                     <li><a href="contact.html">Contact</a></li>
                                                 </ul>
                                             </nav>
