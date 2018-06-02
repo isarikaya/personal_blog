@@ -63,7 +63,7 @@
     function DdList() {
         $.ajax({
             type: 'GET',
-            url: '/admin/category/dropdownList',
+            url: '/admin/blog/dropdowwnList',
             success: function (data) {
                 $.each(data, function (key, item) {
                     var html = "<option value='" + item.ID + "'>" + item.categoryName + "</option>";

@@ -14,7 +14,8 @@ case class BlogET(
   val active:      Boolean,
   val date:        Long,
   val clickCount:  Long,
-  val blogUrl:     String) extends BaseET
+  val blogUrl:     String,
+  val mediumImage: String) extends BaseET
 
 case class BlogTable(tag: Tag) extends BaseTable[BlogET](tag, "Blog") {
   val blogName: Rep[String] = column[String]("blogName")
@@ -26,6 +27,7 @@ case class BlogTable(tag: Tag) extends BaseTable[BlogET](tag, "Blog") {
   val date: Rep[Long] = column[Long]("date")
   val clickCount: Rep[Long] = column[Long]("clickCount")
   val blogUrl: Rep[String] = column[String]("blogUrl")
-  def * = (ID, blogName, blogLabel, blogArticle, blogImage, thumbImage, active, date, clickCount, blogUrl) <> (BlogET.tupled, BlogET.unapply)
+  val mediumImage: Rep[String] = column[String]("mediumImage")
+  def * = (ID, blogName, blogLabel, blogArticle, blogImage, thumbImage, active, date, clickCount, blogUrl,mediumImage) <> (BlogET.tupled, BlogET.unapply)
 
 }

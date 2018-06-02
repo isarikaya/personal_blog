@@ -12,14 +12,17 @@ import BlogDb._
 import forms._
 import java.sql.Connection
 import types._
+import tools._
 import org.joda.time.DateTime
 import compositions.AuthAction
 
 @Singleton
-class CategoryController @Inject() (auth: AuthAction, cc: ControllerComponents) extends AbstractController(cc) {
+class CategoryController @Inject()(auth: AuthAction, cc: ControllerComponents)
+    extends AbstractController(cc) {
 
   def insertPost() = auth { implicit request: Request[AnyContent] =>
     var notify = new Notification()
+    var seo = new SeoTools()
     val result = new JResultT(Notification = Some(notify))
     CategoryForm.form.bindFromRequest.fold(
       errorForm => {
@@ -29,12 +32,22 @@ class CategoryController @Inject() (auth: AuthAction, cc: ControllerComponents) 
       },
       data => {
         implicit val js = Json.format[CategoryET]
-        val newCategory = new CategoryET(0, data.Name, true, DateTime.now.getMillis, data.parentid)
-        val deneme = BlogDb.Categories.table.filter(x => x.ID === data.parentid).result.headOption.Save
+        val seoUrl = seo seoTitle (data.Name)
+        val newCategory = new CategoryET(0,
+                                         data.Name,
+                                         true,
+                                         DateTime.now.getMillis,
+                                         data.parentid,seoUrl)
+        val deneme = BlogDb.Categories.table
+          .filter(x => x.ID === data.parentid)
+          .result
+          .headOption
+          .Save
         if (deneme.isDefined) {
           if (deneme.get.parentid.isDefined) {
             notify.Status = "warning"
-            notify.Message = "Alt kategoriye yeni bir alt kategori ekleyemezsiniz"
+            notify.Message =
+              "Alt kategoriye yeni bir alt kategori ekleyemezsiniz"
           } else {
             BlogDb.Categories.Insert(newCategory).Save
             notify.Status = "success"
@@ -46,11 +59,12 @@ class CategoryController @Inject() (auth: AuthAction, cc: ControllerComponents) 
           notify.Message = "Kategori Başarı İle Eklendi"
         }
         Ok(Json.toJson(result))
-      })
+      }
+    )
   }
   def dropdownList() = auth { implicit request: Request[AnyContent] =>
     implicit val js = Json.format[CategoryET]
-    val ddlist = BlogDb.Categories.table.result.Save
+    val ddlist = BlogDb.Categories.table.filterNot(x => x.parentid.isDefined).result.Save
     Ok(Json.toJson(ddlist))
   }
 
@@ -65,17 +79,20 @@ class CategoryController @Inject() (auth: AuthAction, cc: ControllerComponents) 
         BadRequest(Json.toJson(sside))
       },
       data => {
-        var action = BlogDb.Categories.table.filter(x => (x.categoryName like "%" + data.search + "%"))
+        var action = BlogDb.Categories.table.filter(x =>
+          (x.categoryName like "%" + data.search + "%"))
 
         data.ordercolumn match {
-          case 0 => data.orderdir match {
-            case "asc"  => action = action.sortBy(x => x.ID.asc)
-            case "desc" => action = action.sortBy(x => x.ID.desc)
-          }
-          case 1 => data.orderdir match {
-            case "asc"  => action = action.sortBy(x => x.categoryName.asc)
-            case "desc" => action = action.sortBy(x => x.categoryName.desc)
-          }
+          case 0 =>
+            data.orderdir match {
+              case "asc"  => action = action.sortBy(x => x.ID.asc)
+              case "desc" => action = action.sortBy(x => x.ID.desc)
+            }
+          case 1 =>
+            data.orderdir match {
+              case "asc"  => action = action.sortBy(x => x.categoryName.asc)
+              case "desc" => action = action.sortBy(x => x.categoryName.desc)
+            }
           case _ => {}
         }
 
@@ -84,11 +101,13 @@ class CategoryController @Inject() (auth: AuthAction, cc: ControllerComponents) 
         val list = action.drop(data.start).take(data.length).result.Save
         sside.data = Json.toJson(list)
         Ok(Json.toJson(sside))
-      })
+      }
+    )
   }
   def update(ID: Long) = auth { implicit request =>
     implicit val js = Json.format[CategoryET]
-    val category = BlogDb.Categories.table.filter(x => x.ID === ID).result.headOption.Save
+    val category =
+      BlogDb.Categories.table.filter(x => x.ID === ID).result.headOption.Save
     if (category.isDefined) {
       Ok(Json.toJson(category))
     } else {
@@ -105,8 +124,13 @@ class CategoryController @Inject() (auth: AuthAction, cc: ControllerComponents) 
         BadRequest(Json.toJson(result))
       },
       data => {
-        val category = BlogDb.Categories.table.filter(x => x.ID === data.ID).result.headOption.Save
-        val entity = category.get.copy(categoryName = data.Name, parentid = data.parentid)
+        val category = BlogDb.Categories.table
+          .filter(x => x.ID === data.ID)
+          .result
+          .headOption
+          .Save
+        val entity =
+          category.get.copy(categoryName = data.Name, parentid = data.parentid)
         val res = BlogDb.Categories.Update(entity).Save
         if (res > 0) {
           notify.Status = "success"
@@ -117,16 +141,19 @@ class CategoryController @Inject() (auth: AuthAction, cc: ControllerComponents) 
           notify.Message = "Şuan da bu işlem gerçekleştirilemiyor"
         }
         Ok(Json.toJson(result))
-      })
+      }
+    )
   }
   def delete(ID: Long) = auth { implicit request =>
     implicit val js = Json.format[CategoryET]
     var notify = new Notification()
     val result = new JResultT(Notification = Some(notify))
-    val control = BlogDb.Categories.table.filter(x => x.parentid === ID).length.result.Save
+    val control =
+      BlogDb.Categories.table.filter(x => x.parentid === ID).length.result.Save
     if (control > 0) {
       notify.Status = "error"
-      notify.Message = "Seçmiş olduğunuz kategorinin  bir yada birden fazla alt kategorileri var lütfen alt kategorileri sildikten sonra tekrar deneyiniz."
+      notify.Message =
+        "Seçmiş olduğunuz kategorinin  bir yada birden fazla alt kategorileri var lütfen alt kategorileri sildikten sonra tekrar deneyiniz."
     } else {
       val efected = BlogDb.Categories.table.filter(x => x.ID === ID).delete.Save
       if (efected > 0) {

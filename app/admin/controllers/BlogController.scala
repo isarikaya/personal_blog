@@ -47,14 +47,16 @@ class BlogController @Inject() (auth: AuthAction, cc: ControllerComponents) exte
           fileName = "img_" + name
           picture.ref.moveTo(Paths.get(Play.current.path + filePath + fileName + fileExt), replace = true)
           implicit val writer = JpegWriter().withCompression(50)
-          Image.fromPath(Paths.get(Play.current.path + filePath + fileName + fileExt)).scaleToWidth(150)
-            .output(new File(Play.current.path + filePath + fileName + "_150" + fileExt))
+          Image.fromPath(Paths.get(Play.current.path + filePath + fileName + fileExt)).scaleToWidth(300)
+            .output(new File(Play.current.path + filePath + fileName + "_300" + fileExt))
+            Image.fromPath(Paths.get(Play.current.path + filePath + fileName + fileExt)).scaleToWidth(600)
+            .output(new File(Play.current.path + filePath + fileName + "_600" + fileExt))
         }
         val seoUrl = seo seoTitle (data.Name)
         val newBlog = new BlogET(0, data.Name, data.Label, data.Content,
           filePath.replace("public", "assets") + fileName + fileExt,
-          filePath.replace("public", "assets") + fileName + "_150" + fileExt,
-          true, DateTime.now.getMillis, 0, seoUrl)
+          filePath.replace("public", "assets") + fileName + "_300" + fileExt,
+          true, DateTime.now.getMillis, 0, seoUrl,filePath.replace("public", "assets") + fileName + "_600" + fileExt)
         val res = BlogDb.Blogs.Insert(newBlog).Save
         result.IsSuccess = true
         BlogDb.BlogCategories.Insert(new BlogCategoryET(0, res, data.cid)).Save
@@ -68,9 +70,9 @@ class BlogController @Inject() (auth: AuthAction, cc: ControllerComponents) exte
         Ok(Json.toJson(result))
       })
   }
-  def dropdownList() = auth { implicit request: Request[AnyContent] =>
+  def dropdownListt() = auth { implicit request: Request[AnyContent] =>
     implicit val js = Json.format[CategoryET]
-    val ddlist = BlogDb.Categories.table.result.Save
+    val ddlist = BlogDb.Categories.table.filter(x => x.parentid.isDefined).result.Save
     Ok(Json.toJson(ddlist))
   }
   //LIST
@@ -177,7 +179,8 @@ class BlogController @Inject() (auth: AuthAction, cc: ControllerComponents) exte
           val nwFileName = filePath + "." + ext
           picture.ref.moveTo(Paths.get(Play.current.path + nwFileName), replace = true)
           implicit val writer = JpegWriter().withCompression(50)
-          Image.fromPath(Paths.get(Play.current.path + nwFileName)).scaleToWidth(150).output(new File(Play.current.path + filePath + "_150." + ext))
+          Image.fromPath(Paths.get(Play.current.path + nwFileName)).scaleToWidth(300).output(new File(Play.current.path + filePath + "_300." + ext))
+          Image.fromPath(Paths.get(Play.current.path + nwFileName)).scaleToWidth(600).output(new File(Play.current.path + filePath + "_600." + ext))
         }
         val blog = BlogDb.Blogs.table.filter(x => x.ID === data.ID).result.headOption.Save //
         if (blog.isDefined) {

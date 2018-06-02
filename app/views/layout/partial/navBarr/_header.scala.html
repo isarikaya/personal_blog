@@ -98,10 +98,10 @@
                                                 <ul class="clearfix">
                                                     <li class="current drop"><a href="/">Anasayfa</a>
                                                     @for(dto <- menu){
-                                                    <li class="drop"><a href="#">@dto.Category.categoryName</a>
+                                                    <li class="drop"><a href="/category/@dto.Category.slug">@dto.Category.categoryName</a>
                                                         <ul class="dropdown">
                                                         	@for(subCategory <- dto.SubCategories) {
-                                                        		<li><a href="blog-single-image.html">@subCategory.categoryName</a></li>
+                                                        		<li><a href="/category/@subCategory.slug">@subCategory.categoryName</a></li>
                                                         	}
                                                         </ul>
                                                     </li>

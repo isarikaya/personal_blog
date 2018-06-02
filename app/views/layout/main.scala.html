@@ -26,6 +26,7 @@
     <link rel="stylesheet" media="screen" href="@routes.Assets.versioned("frontend/blog/blogs/css/responsive.css")">
     <!-- User style -->
     <link rel="stylesheet" media="screen" href="@routes.Assets.versioned("frontend/blog/blogs/css/custom.css")">
+
     <!-- Style customizer (Remove these lines please) -->
     <link rel="stylesheet" media="screen" href="@routes.Assets.versioned("frontend/blog/blogs/css/style-customizer.css")">
     <link href="#" data-style="styles" rel="stylesheet">
@@ -37,17 +38,14 @@
                 <div class="preloader-wave-effect"></div>
             </div>
             <div class="wrapper">
-                    @renders.HtmlRender.header()
+                @renders.HtmlRender.header()
                 <div id="page-content" class="page-wrapper">
                     <div class="zm-section bg-white pt-50 xs-pt-30 sm-pt-30 pb-70">
                          <div class="container">
                             <div class="row">
-                                
                                 @content
-                                
                             </div>
                         </div>
-                                
                     </div>
                 </div>
                                 @views.html.layout.partial.navBarr._footer()
@@ -55,12 +53,10 @@
         
     <!-- jquery latest version -->
     <script src="@routes.Assets.versioned("frontend/blog/blogs/js/vendor/jquery-1.12.1.min.js")" type="text/javascript"></script>
-    <!-- Bootstrap framework js -->
     <script src="@routes.Assets.versioned("frontend/blog/blogs/js/bootstrap.min.js")" type="text/javascript"></script>
-    <!-- All js plugins included in this file. -->
     <script src="@routes.Assets.versioned("frontend/blog/blogs/js/owl.carousel.min.js")" type="text/javascript"></script>
     <script src="@routes.Assets.versioned("frontend/blog/blogs/js/plugins.js")" type="text/javascript"></script>
-    <!-- Main js file that contents all jQuery plugins activation. -->
+    <script src="@routes.Assets.versioned("frontend/blog/blogs/js/sweetalert2.all.js")" type="text/javascript"></script>
     <script src="@routes.Assets.versioned("frontend/blog/blogs/js/main.js")" type="text/javascript"></script>
       @afterScripts
     </body>
