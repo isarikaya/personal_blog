@@ -52,6 +52,7 @@ class TagController @Inject()(cc: ControllerComponents)
               Article = article._1;
               CategoryName =
                 article._2.map(y => y._2.categoryName).getOrElse("")
+              slug = article._2.map(y => y._2.slug).getOrElse("")
               Description = outer.substring(0,
                                             if (outer.length >= 150) 150
                                             else outer.length) + "...";

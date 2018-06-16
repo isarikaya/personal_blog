@@ -14,7 +14,7 @@
                     @for(blog <- articles){
                         <article class="zm-post-lay-c zm-single-post clearfix">
                             <div class="zm-post-thumb f-left">
-                                <a href="@blog.Article.blogUrl"><img src="@blog.Article.mediumImage" alt="img"></a>
+                                <a href="/@blog.Article.blogUrl"><img src="@blog.Article.mediumImage" alt="img"></a>
                             </div>
                             <div class="zm-post-dis f-right">
                                 <div class="zm-post-header">
@@ -26,7 +26,7 @@
                                         </ul>
                                     </div>
                                     <div class="zm-post-content" style="word-wrap: break-word;">
-                                    <p>@Html(blog.Article.blogArticle)</p>
+                                    <p>@Html(blog.Description)</p>
                                     </div>
                                 </div>
                             </div>
