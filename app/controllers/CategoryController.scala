@@ -19,6 +19,8 @@ import compositions.AuthAction
 import transfers._
 import tools._
 
+import org.jsoup._
+
 @Singleton
 class CategoryController @Inject()(cc: ControllerComponents)
     extends AbstractController(cc) {

@@ -1,0 +1,42 @@
+@(tagArticles: Seq[transfers.ArticleCatDTO])
+@import views.DateExtension._
+@afterScripts = { <script src="@routes.Assets.versioned("frontend/blog/blogs/js/sidebar.js")" type="text/javascript"></script>}@views.html.layout.main("artifidea.com") {
+    <div class="mb-40 col-xs-12 col-sm-12 col-md-12 col-lg-12">
+        <div class="section-title">
+            <h2 class="h6 header-color inline-block uppercase">SON Makale</h2>
+        </div>
+    </div>
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-8 columns">
+            <!-- Start trending post -->
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="zm-posts">
+                    @for(blog <- tagArticles){
+                        <article class="zm-post-lay-c zm-single-post clearfix">
+                            <div class="zm-post-thumb f-left">
+                                <a href="@blog.Article.blogUrl"><img src="@blog.Article.mediumImage" alt="img"></a>
+                            </div>
+                            <div class="zm-post-dis f-right">
+                                <div class="zm-post-header">
+                                        <div class="zm-category"><a href="#" class="bg-cat-5 cat-btn">@blog.CategoryName</a></div>
+                                    <h2 class="zm-post-title"><a href="@blog.Article.blogUrl">@blog.Article.blogName</a></h2>
+                                    <div class="zm-post-meta">
+                                        <ul>
+                                            <li class="s-meta"><a href="@blog.Article.blogUrl" class="zm-author"><i class="fa fa-eye"></i> @blog.Article.clickCount</a></li>
+                                            <li class="s-meta"><a href="@blog.Article.blogUrl" class="zm-date">@blog.Article.date.toDateString</a></li>
+                                        </ul>
+                                    </div>
+                                    <div class="zm-post-content" style="word-wrap: break-word;">
+                                    <p>@Html(blog.Description)</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </article>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+        @renders.HtmlRender.sideBar()
+        @views.html.layout.partial.navBarr._pagination()
+}(afterScripts)

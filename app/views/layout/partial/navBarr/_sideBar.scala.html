@@ -28,7 +28,7 @@
                                             <a href="@Blog.blogUrl"><img src="@Blog.thumbImage" alt="@Blog.blogLabel"></a>
                                         </div>
                                         <div class="zm-post-dis f-right">
-                                            <div class="zm-post-header">
+                                            <div class="zm-post-header" style="word-wrap: break-word;">
                                                 <h2 class="zm-post-title"><a href="@Blog.blogUrl">@Blog.blogName</a></h2>
                                                 <div class="zm-post-meta">
                                                     <ul>
@@ -121,7 +121,7 @@
                     <div class="col-md-12 col-sm-12 col-lg-12 sm-mt-60 columns">
                         <div class="zm-tagcloud">
                         @for(tag <- tags) {
-                           <a href="/etiket/@tag">@tag</a>
+                           <a href="/tag/@tag">@tag</a>
                         }
                         </div>
                     </div>
