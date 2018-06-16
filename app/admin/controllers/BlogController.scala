@@ -212,7 +212,7 @@ class BlogController @Inject() (auth: AuthAction, cc: ControllerComponents) exte
       notify.Message = "Silme işlemi başarıyla gerçekleşti."
     } else {
       notify.Status = "error"
-      notify.Message = "İşlem başarısız oldu"
+      notify.Message = "Silme İşlemi Gerçekleştirilemedi."
     }
     Ok(Json.toJson(result))
   }

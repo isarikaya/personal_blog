@@ -17,8 +17,8 @@
                                 <a href="@blog.Article.blogUrl"><img src="@blog.Article.mediumImage" alt="img"></a>
                             </div>
                             <div class="zm-post-dis f-right">
-                                <div class="zm-post-header">
-                                    <div class="zm-category"><a href="#" class="bg-cat-5 cat-btn">@blog.CategoryName</a></div>
+                                <div class="zm-post-header" style="word-wrap: break-word;">
+                                    <div class="zm-category"><a href="/category/@blog.slug" class="bg-cat-5 cat-btn">@blog.CategoryName</a></div>
                                     <h2 class="zm-post-title"><a href="@blog.Article.blogUrl">@blog.Article.blogName</a></h2>
                                     <div class="zm-post-meta">
                                         <ul>
@@ -26,8 +26,8 @@
                                             <li class="s-meta"><a href="@blog.Article.blogUrl" class="zm-date">@blog.Article.date.toDateString</a></li>
                                         </ul>
                                     </div>
-                                    <div class="zm-post-content">
-                                    <p>@Html(blog.Article.blogArticle)</p>
+                                    <div class="zm-post-content" style="word-wrap: break-word;">
+                                            @Html(blog.Description) <a href="@blog.Article.blogUrl">Devamını oku</a>
                                     </div>
                                 </div>
                             </div>

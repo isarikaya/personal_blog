@@ -36,11 +36,11 @@
                                 <div class="form-group">
                                         <div class="input-group">
                                         <span class="input-group-addon"><i class="glyphicon glyphicon-asterisk"></i></span>
-                                    <input class="form-control" placeholder="Şifre" name="password" type="password" >
+                                    <input id="txt" class="form-control" placeholder="Şifre" name="password" type="password" >
                                     </div>
                                 </div>
                                 <!-- <span id="login_message"></span> -->
-                                <button type="submit" class="btn btn-outline btn-success btn-lg btn-block">Giriş</button>
+                                <button type="submit" id="myButton" class="btn btn-outline btn-success btn-lg btn-block">Giriş</button>
                         </form>
                     </div>
                 </div>
@@ -63,6 +63,12 @@
             //     $("#login_btn").hide();
             //     $("#login_message").html("<img src='/assets/images/login.gif'>");
             // });
+            $("#txt").keyup(function(event) {
+              if (event.keyCode === 13) {
+               $("#myButton").click();
+                }
+            });
+
             $("#validateForm").bootstrapValidator({
                 
                 feedbackIcons:{

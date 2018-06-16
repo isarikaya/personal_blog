@@ -1,13 +1,14 @@
 <link rel="stylesheet" media="screen" href="/assets/stylesheets/dataTables.bootstrap.css">
 <link rel="stylesheet" media="screen" href="/assets/stylesheets/dataTables.responsive.css">
-<link rel="stylesheet" media="screen" href="/assets/stylesheets/bootstrap-tagsinput.css"> @afterScripts = {
+<link rel="stylesheet" media="screen" href="/assets/stylesheets/bootstrap-tagsinput.css">@afterScripts = {
 <script src="/assets/javascripts/jquery.form.js"></script>
 <script src="/assets/javascripts/paipiper.js"></script>
 <script src="/assets/javascripts/jquery.dataTables.min.js"></script>
 <script src="/assets/javascripts/dataTables.bootstrap.min.js"></script>
 <script src="/assets/javascripts/dataTables.responsive.js"></script>
-<script src="https://cdn.ckeditor.com/4.8.0/standard/ckeditor.js"></script>
 <script src="/assets/javascripts/bootstrap-tagsinput.js"></script>
+<script src="/assets/ckeditor/ckeditor.js"></script>
+
 <script>
     $(document).ready(function () {
         var table = PaiDataTable("#crud_table", {
@@ -57,7 +58,7 @@
     });
 </script>
 <script>
-    CKEDITOR.replace('editor1');
+    CKEDITOR.replace( 'editor1' );
 </script>
 <script>
     function DdList() {
@@ -118,7 +119,7 @@
         </div>
     </div>
 </div>
-<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal fade" id="myModal" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">

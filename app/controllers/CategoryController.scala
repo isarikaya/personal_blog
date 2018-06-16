@@ -23,7 +23,8 @@ import tools._
 class CategoryController @Inject()(cc: ControllerComponents)
     extends AbstractController(cc) {
   def listByCategory(slug: String) = Action { implicit request: Request[AnyContent] =>
-  val ID = BlogDb.Categories.table.filter(x => x.slug === slug).map(x => x.ID).result.headOption.Save
+  val ID = BlogDb.Categories.table.filter(x => x.slug === slug)
+  .map(x => x.ID).result.headOption.Save
   if(ID.isDefined){
     val articles = BlogDb.Blogs.table.joinLeft(BlogDb.BlogCategories.table).on(_.ID === _.blogid)
     .filter(x => x._2.map(y => y.categoryid  === ID.get))

@@ -1,6 +1,6 @@
 @(articles: Seq[transfers.ArticleCatDTO])
 @import views.DateExtension._
-@afterScripts = { <script src="@routes.Assets.versioned("frontend/blog/blogs/js/sidebar.js")" type="text/javascript"></script>}@views.html.layout.main("blog baslik") {
+@afterScripts = { <script src="@routes.Assets.versioned("frontend/blog/blogs/js/sidebar.js")" type="text/javascript"></script>}@views.html.layout.main("artifidea.com") {
     <div class="mb-40 col-xs-12 col-sm-12 col-md-12 col-lg-12">
         <div class="section-title">
             <h2 class="h6 header-color inline-block uppercase">SON Makale</h2>
@@ -25,7 +25,7 @@
                                             <li class="s-meta"><a href="@blog.Article.blogUrl" class="zm-date">@blog.Article.date.toDateString</a></li>
                                         </ul>
                                     </div>
-                                    <div class="zm-post-content">
+                                    <div class="zm-post-content" style="word-wrap: break-word;">
                                     <p>@Html(blog.Article.blogArticle)</p>
                                     </div>
                                 </div>
