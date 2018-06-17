@@ -25,7 +25,9 @@ import org.jsoup._
 @Singleton
 class HomeController @Inject()(cc: ControllerComponents)
     extends AbstractController(cc) {
+
   def index() = Action { implicit request: Request[AnyContent] =>
+  //println(DateTime.now.getMillis)
     val articleCat: Seq[ArticleCatDTO] = BlogDb.Blogs.table
       .joinLeft(
         BlogDb.BlogCategories.table
@@ -73,6 +75,7 @@ class HomeController @Inject()(cc: ControllerComponents)
   }
   def detail(url: String) = Action { implicit request: Request[AnyContent] =>
     def rand = () => { SimpleFunction.nullary[Double]("rand") }
+    //println(DateTime.now.getMillis)
     val before = BlogDb.Blogs.table.sortBy(x => rand()).result.headOption.Save
     val after = BlogDb.Blogs.table
       .filter(x =>
@@ -90,6 +93,10 @@ class HomeController @Inject()(cc: ControllerComponents)
         .headOption
         .Save
     if (ID.isDefined) {
+      val read = BlogDb.Blogs.table.filter(x => x.ID === ID.get).result.head.Save
+      val blogEf = read.copy(clickCount = read.clickCount + 1)
+      BlogDb.Blogs.Update(blogEf).Save
+
       val article = BlogDb.Blogs.table
         .joinLeft(BlogDb.BlogCategories.table)
         .on(_.ID === _.blogid)
@@ -103,6 +110,7 @@ class HomeController @Inject()(cc: ControllerComponents)
             CategoryName = "";
             Tag = article._1.blogLabel.split(",").toSeq
         })
+
       if (article.isDefined) {
         val labels = article.get.Article.blogLabel.split(",").toSeq
         var relateds: Seq[ArticleCatDTO] = Seq()

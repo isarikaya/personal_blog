@@ -26,6 +26,7 @@ import com.sksamuel.scrimage.nio.JpegWriter
 class BlogController @Inject() (auth: AuthAction, cc: ControllerComponents) extends AbstractController(cc) {
   //POST INSERT
   def insertPost = auth(parse.multipartFormData) { implicit request =>
+  println("PROBLEM ÇÖZMEYİ SEVERİMMMMMM")
     var notify = new Notification()
     var seo = new SeoTools()
     val result = new JResultT(Notification = Some(notify))

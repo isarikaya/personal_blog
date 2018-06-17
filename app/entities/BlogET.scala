@@ -13,7 +13,7 @@ case class BlogET(
   val thumbImage:  String,
   val active:      Boolean,
   val date:        Long,
-  val clickCount:  Long,
+  var clickCount:  Long,
   val blogUrl:     String,
   val mediumImage: String) extends BaseET
 
