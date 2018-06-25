@@ -70,8 +70,8 @@ class HomeController @Inject()(cc: ControllerComponents)
           .on(_.categoryid === _.ID))
       .on(_.ID === _._1.blogid)
       .sortBy(x => x._1.date.desc)
-      .drop(15 * (counter - 1))
-      .take(15)
+      .drop(10 * (counter - 1))
+      .take(10)
       .result
       .Save
       .map(blogCat => {
@@ -80,7 +80,6 @@ class HomeController @Inject()(cc: ControllerComponents)
           .text()
         new ArticleCatDTO {
           Article = new BlogDTO {
-            ID= blogCat._1.ID;
             blogName = blogCat._1.blogName;
             blogLabel = blogCat._1.blogLabel;
             date = blogCat._1.date;

@@ -41,30 +41,6 @@
                                     </article>
                                      }
                                 </div>
-                            
-                                <!-- End Latest Posts 
-                                <div id="comments_posts" class="zm-posts tab-pane fade">
-                                    <!-- Start single post layout E 
-                                    <article class="zm-post-lay-e zm-single-post clearfix">
-                                        <div class="zm-post-thumb f-left">
-                                            <a href="blog-single-image.html"><img src="assets/frontend/blog/blogs/images/post/e/1.jpg" alt="img"></a>
-                                        </div>
-                                        <div class="zm-post-dis f-right">
-                                            <div class="zm-post-header">
-                                                <h2 class="zm-post-title"><a href="blog-single-image.html">Magna aliqua ut enim ad minim veniam quis nostrud.</a></h2>
-                                                <div class="zm-post-meta">
-                                                    <ul>
-                                                        <li class="s-meta"><a href="#" class="zm-author">Thomson Smith</a></li>
-                                                        <li class="s-meta"><a href="#" class="zm-date">April 18, 2016</a></li>
-                                                    </ul>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </article>
-                                    
-                                </div>
-                                 End Comments Posts -->
-                                <!-- Start Trending Posts -->
                                 <div id="trending_posts" class="zm-posts tab-pane fade">
                                     <!-- Start single post layout E -->
                                     @for(Blog <- trend){
@@ -93,27 +69,50 @@
                 </aside>
             </div>
             <div class="col-md-12 col-sm-12 col-lg-12 col-xs-12 columns ">
-                <!-- abone ol başlangıcı-->
-                <div class="row mt-70">
-                    <div class="col-md-12 col-sm-12 col-lg-12 sm-mt-60 columns">
-                        <aside class="subscribe-form bg-dark text-center sidebar">
-                            <h3 class="uppercase zm-post-title">Yenilikleri Öğren</h3>
-                            <p>Join 80,000+ awesome subscribers and update yourself with our exclusive news.</p>
-                            <form action="#">
-                                <input placeholder="Enter your full name" type="text">
-                                <input placeholder="Enter email address" required="" type="email">
-                                <input value="Subscribe" type="submit">
-                            </form>
-                        </aside>
+                <div class="row mt-30 hidden-md">
+                    <div class="col-md-12  col-sm-12 col-lg-12 col-xs-12 columns xs-mt-40">
+                        <div class="row mb-40 sm-mt-0">
+                            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                <div class="section-title">
+                                    <h2 class="h6 header-color inline-block uppercase">Bana soru sor</h2>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
+                </div>
+                <aside class="subscribe-form text-center sidebar">
+                    <h3 class="uppercase zm-post-title">Soru sor</h3>
+                    <p>Proje ve sorunlarına yardımcı olabilmem için buradan bana hızlı bir şekilde soru sorabilirsin.
+                    </p>
+                    <form id="validate" role="form" method="POST" action="/question/insert">
+                    </form>
+                    <input id ="question" value="SOR" type="submit">
+                </aside>
+            <div class="col-md-12 col-sm-12 col-lg-12 col-xs-12 columns ">
+                <div class="row mt-30 hidden-md">
+                    <div class="col-md-12  col-sm-12 col-lg-12 col-xs-12 columns xs-mt-40">
+                        <div class="row mb-40 sm-mt-0">
+                            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                <div class="section-title">
+                                    <h2 class="h6 header-color inline-block uppercase">Kategoriler</h2>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="list-group">
+                    @for(Category <- category){
+                        <a href="/category/@Category._2"><button type="button" class="list-group-item">@Category._1<span class="badge">@Category._3</span></button></a>
+                        }
+                    </div>
             </div>
             <!-- abone ol bitişi-->
             <aside class="zm-tagcloud-list col-xs-12 col-md-12 col-sm-12 col-lg-12 columns">
-                <div class="row mt-70">
+                <div class="row mt-20">
                     <div class="col-md-12 col-sm-12 col-lg-12 sm-mt-60 columns">
                         <div class="section-title">
-                            <h2 class="h6 header-color inline-block uppercase">Etiketler</h2>
+                            <h2 class="h6 header-color inline-block uppercase">Etiket Bulutu</h2>
                         </div>
                     </div>
                 </div>
@@ -149,49 +148,12 @@
                             <a href="#" class="social-btn large bg-stack-overflow block"><span class="btn_text"><i class="fa fa-stack-overflow"></i>806,457 Subscribers</span></a>-->
                         </div>
                     </div>
-                    <div class="col-xs-12 mt-40 mb-40">
+                    <!-- <div class="col-xs-12 mt-40 mb-40">
                         <div class="advertisement">
                             <a href="#"><img src="assets/frontend/blog/blogs/images/ad/ad_sidebar.png" alt=""></a>
                         </div>
-                    </div>
-                </div>
-                <!-- End Follow Us area -->
-            </div>
-        </div>
-        <div class="row mt-10 hidden-md">
-            <div class="col-md-12  col-sm-12 col-lg-12 col-xs-12 columns xs-mt-40">
-                <div class="row mb-40 sm-mt-0">
-                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                        <div class="section-title">
-                            <h2 class="h6 header-color inline-block uppercase">Kategoriler</h2>
-                        </div>
-                    </div>
+                    </div> -->
                 </div>
             </div>
         </div>
-        <div class="list-group">
-        @for(Category <- category){
-            <a href="/category/@Category._2"><button type="button" class="list-group-item">@Category._1<span class="badge">@Category._3</span></button></a>
-            }
-        </div>
-        <div class="row mt-10 hidden-md">
-            <div class="col-md-12  col-sm-12 col-lg-12 col-xs-12 columns xs-mt-40">
-                <div class="row mb-40 sm-mt-0">
-                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                        <div class="section-title">
-                            <h2 class="h6 header-color inline-block uppercase">Bana soru sor</h2>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <aside class="subscribe-form text-center sidebar">
-            <h3 class="uppercase zm-post-title">Soru sor</h3>
-            <p>Proje ve sorunlarına yardımcı olabilmem için buradan bana hızlı bir şekilde soru sorabilirsin.
-            </p>
-            <form role="form" method="POST" action="/question/insert">
-            </form>
-            <input id ="question" value="SOR" type="submit">
-        </aside>
-        
     </div>
