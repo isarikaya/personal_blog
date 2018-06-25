@@ -46,7 +46,14 @@ class CategoryController @Inject()(cc: ControllerComponents)
               .parse(article._1.blogArticle)
               .text()
             new ArticleCatDTO {
-              Article = article._1;
+              Article = new BlogDTO {
+                blogName = article._1.blogName;
+                blogLabel = article._1.blogLabel;
+                date = article._1.date;
+                clickCount = article._1.clickCount;
+                mediumImage = article._1.mediumImage;
+                blogUrl = article._1.blogUrl;
+              }
               CategoryName = "";
               Description = outer.substring(0,
                                             if (outer.length >= 150) 150

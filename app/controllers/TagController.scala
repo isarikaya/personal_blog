@@ -49,7 +49,15 @@ class TagController @Inject()(cc: ControllerComponents)
               .parse(article._1.blogArticle)
               .text()
             new ArticleCatDTO {
-              Article = article._1;
+              Article = new BlogDTO {
+                blogName = article._1.blogName;
+                blogLabel = article._1.blogLabel;
+                date = article._1.date;
+                clickCount = article._1.clickCount;
+                mediumImage = article._1.mediumImage;
+                blogUrl = article._1.blogUrl;
+                //category = article._2.map(y => y._2.categoryName).getOrElse("");
+              };
               CategoryName =
                 article._2.map(y => y._2.categoryName).getOrElse("")
               slug = article._2.map(y => y._2.slug).getOrElse("")

@@ -1,6 +1,7 @@
 package entities
 
 import slick.driver.MySQLDriver.api._
+import play.api.libs.json._
 import slick.driver.JdbcDriver
 import scala.reflect._
 
@@ -17,6 +18,7 @@ case class BlogET(
   val blogUrl:     String,
   val mediumImage: String) extends BaseET
 
+
 case class BlogTable(tag: Tag) extends BaseTable[BlogET](tag, "Blog") {
   val blogName: Rep[String] = column[String]("blogName")
   val blogLabel: Rep[String] = column[String]("blogLabel")
@@ -30,4 +32,4 @@ case class BlogTable(tag: Tag) extends BaseTable[BlogET](tag, "Blog") {
   val mediumImage: Rep[String] = column[String]("mediumImage")
   def * = (ID, blogName, blogLabel, blogArticle, blogImage, thumbImage, active, date, clickCount, blogUrl,mediumImage) <> (BlogET.tupled, BlogET.unapply)
 
-}
+} 

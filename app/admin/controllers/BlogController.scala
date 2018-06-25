@@ -26,7 +26,6 @@ import com.sksamuel.scrimage.nio.JpegWriter
 class BlogController @Inject() (auth: AuthAction, cc: ControllerComponents) extends AbstractController(cc) {
   //POST INSERT
   def insertPost = auth(parse.multipartFormData) { implicit request =>
-  println("PROBLEM ÇÖZMEYİ SEVERİMMMMMM")
     var notify = new Notification()
     var seo = new SeoTools()
     val result = new JResultT(Notification = Some(notify))
@@ -137,14 +136,15 @@ class BlogController @Inject() (auth: AuthAction, cc: ControllerComponents) exte
         sside.recordsTotal = BlogDb.Blogs.table.length.result.Save
         sside.recordsFiltered = action.length.result.Save
         val list = action.drop(data.start).take(data.length).result.Save
-          .map(x => new BlogDTO(
-            x._1.ID,
-            x._1.blogName,
-            x._1.blogLabel,
-            x._1.date,
-            x._1.clickCount,
-            x._2.map(y => y._2.map(z => z.categoryName).getOrElse("-")).getOrElse("-"),
-            x._2.map(y => y._1._2.categoryName).getOrElse("-")))
+          .map(x => new BlogDTO{
+            ID =  x._1.ID;
+            blogName = x._1.blogName;
+            blogLabel = x._1.blogLabel;
+            date = x._1.date;
+            clickCount = x._1.clickCount;
+            category = x._2.map(y => y._2.map(z => z.categoryName).getOrElse("-")).getOrElse("-");
+            parentCategory = x._2.map(y => y._1._2.categoryName).getOrElse("-"); 
+            })
         sside.data = Json.toJson(list)
         Ok(Json.toJson(sside))
       })
