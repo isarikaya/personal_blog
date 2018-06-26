@@ -22,7 +22,7 @@ object HtmlRender {
     .filter(p => p._1.parentid.isDefined)
     .groupBy(x=> x._1)
     .map(x=> (x._1.categoryName, x._1.slug, x._2.length))
-    .sortBy(x=>x._1).take(10).result.Save
+    .sortBy(x=>x._2.desc).take(10).result.Save
     labels.foreach(label => {
       val tags = label.split(",")
       tags.foreach(tag => {

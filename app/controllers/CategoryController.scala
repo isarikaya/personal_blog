@@ -24,7 +24,10 @@ import org.jsoup._
 @Singleton
 class CategoryController @Inject()(cc: ControllerComponents)
     extends AbstractController(cc) {
-  def listByCategory(slug: String) = Action {
+  def index(slug: String) = Action { implicit request: Request[AnyContent] =>
+    Ok(views.html.category.index(slug))
+  }
+  def listByCategory(slug: String, counter: Int) = Action {
     implicit request: Request[AnyContent] =>
       val ID = BlogDb.Categories.table
         .filter(x => x.slug === slug)
@@ -38,7 +41,8 @@ class CategoryController @Inject()(cc: ControllerComponents)
           .on(_.ID === _.blogid)
           .filter(x => x._2.map(y => y.categoryid === ID.get))
           .sortBy(x => x._1.date.desc)
-          .take(15)
+          .drop(10 * (counter - 1))
+          .take(10)
           .result
           .Save
           .map(article => {
@@ -60,7 +64,7 @@ class CategoryController @Inject()(cc: ControllerComponents)
                                             else outer.length) + "...";
             }
           })
-        Ok(views.html.category.index(articles))
+        Ok(Json.toJson(articles))
       } else {
         NotFound("error!")
       }

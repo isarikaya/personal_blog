@@ -44,7 +44,7 @@ class LoginController @Inject() (auth: AuthAction, cc: ControllerComponents) ext
           result.IsRedirect = true
           result.RedirectUrl = "/admin"
           notify.Status = "success"
-          notify.Message = "Hoşgeldiniz İbrahim Bey iyi çalışmalar dileriz :)"
+          notify.Message = "Hoşgeldiniz iyi çalışmalar dileriz :)"
           Ok(Json.toJson(result)).withSession("currentUser" -> data.username)
         } else {
           notify.Status = "error"
