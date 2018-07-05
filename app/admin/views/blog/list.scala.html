@@ -17,7 +17,6 @@
             Columns: [
                 { "data": "ID" },
                 { "data": "blogName" },
-                { "data": "blogLabel" },
                 { "data": "parentCategory" },
                 { "data": "category" },
                 { "data": "clickCount" },
@@ -34,11 +33,11 @@
                 $.get("/admin/blog/edit/" + rowId, function (data) {
                     $("[name='ID']").val(data.ID)
                     $("[name='Name']").val(data.blogName)
-                    $("[name='Label']").val(data.blogLabel)
+                    $("[name='tag']").val(data.etiket)
                     CKEDITOR.instances.editor1.setData(data.blogArticle)
-                    var lbl = data.blogLabel.split(",");
+                    var lbl = data.etiket.split(" ");
                     $.each(lbl, function (index, value) {
-                        $('[name="Label"]').tagsinput('add', value)
+                        $('[name="tag"]').tagsinput('add', value)
                     });
                 })
             }
@@ -73,7 +72,7 @@
             }
         });
     };
-</script>} @admin.views.html.layout.main("Pai Piper") {
+</script>} @admin.views.html.layout.main("artifidea") {
 <div class="row">
     <div class="col-lg-12">
         <div class="panel panel-primary">
@@ -105,7 +104,6 @@
                             <tr>
                                 <th>ID</th>
                                 <th>Başlık</th>
-                                <th>Etiket</th>
                                 <th>Alt Kategori</th>
                                 <th>Üst Kategori</th>
                                 <th>Tıklanma</th>
@@ -137,7 +135,7 @@
                     <div class="form-group col-lg-12">
                         <label class="text-primary">Etiket</label>
                         <br>
-                        <input id="clearTags" name="Label" type="text" class "form-control" value="" data-role="tagsinput" placeholder="Etiket girin">
+                        <input id="clearTags" name="tag" type="text" class="form-control" value="" data-role="tagsinput" placeholder="Etiket girin">
                     </div>
                     <div class="form-group col-lg-12">
                         <label class="text-primary">kategori</label>

@@ -18,6 +18,8 @@ object BlogDb {
   val BlogCategories = new Repository[BlogCategoryET, BlogCategoryTable](TableQuery[BlogCategoryTable])
   val Users = new Repository[UserET, UserTable](TableQuery[UserTable])
   val Questions = new Repository[QuestionET, QuestionTable](TableQuery[QuestionTable])
+  val Tags = new Repository[TagET, TagTable](TableQuery[TagTable])
+  val BlogTags = new Repository[BlogTagET, BlogTagTable](TableQuery[BlogTagTable])
   //Uzantı metodu olarak çağırabilmemiz için.
   implicit class Runner[R](action: DBIOAction[R, NoStream, Nothing]) {
     def Save = Await.result(_db.run(action), Duration.Inf)

@@ -25,7 +25,18 @@ import org.jsoup._
 class CategoryController @Inject()(cc: ControllerComponents)
     extends AbstractController(cc) {
   def index(slug: String) = Action { implicit request: Request[AnyContent] =>
-    Ok(views.html.category.index(slug))
+  val ID = BlogDb.Categories.table
+        .filter(x => x.slug === slug)
+        .map(x => x.ID)
+        .result
+        .headOption
+        .Save
+      if(ID.isDefined) {
+        Ok(views.html.category.index(slug))
+      }
+      else{
+        NotFound("")
+      }
   }
   def listByCategory(slug: String, counter: Int) = Action {
     implicit request: Request[AnyContent] =>
@@ -52,13 +63,12 @@ class CategoryController @Inject()(cc: ControllerComponents)
             new ArticleCatDTO {
               Article = new BlogDTO {
                 blogName = article._1.blogName;
-                blogLabel = article._1.blogLabel;
                 date = article._1.date;
                 clickCount = article._1.clickCount;
                 mediumImage = article._1.mediumImage;
                 blogUrl = article._1.blogUrl;
               }
-              CategoryName = "";
+              CategoryName = "-";
               Description = outer.substring(0,
                                             if (outer.length >= 150) 150
                                             else outer.length) + "...";

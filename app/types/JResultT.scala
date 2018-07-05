@@ -8,7 +8,7 @@ case class JResultT(
   var RedirectUrl:  String               = "",
   var Notification: Option[Notification] = None)
 case class Notification(
-  var Title:   String = "PaiPiper'dan Bildirim",
+  var Title:   String = "Artifidea'dan Bildirim !",
   var Status:  String = "info",
   var Message: String = "")
 object Notification {

@@ -8,7 +8,6 @@ import scala.reflect._
 case class BlogET(
   override val ID: Long,
   val blogName:    String,
-  val blogLabel:   String,
   val blogArticle: String,
   val blogImage:   String,
   val thumbImage:  String,
@@ -21,7 +20,6 @@ case class BlogET(
 
 case class BlogTable(tag: Tag) extends BaseTable[BlogET](tag, "Blog") {
   val blogName: Rep[String] = column[String]("blogName")
-  val blogLabel: Rep[String] = column[String]("blogLabel")
   val blogArticle: Rep[String] = column[String]("blogArticle")
   val blogImage: Rep[String] = column[String]("blogImage")
   val thumbImage: Rep[String] = column[String]("thumbImage")
@@ -30,6 +28,6 @@ case class BlogTable(tag: Tag) extends BaseTable[BlogET](tag, "Blog") {
   val clickCount: Rep[Long] = column[Long]("clickCount")
   val blogUrl: Rep[String] = column[String]("blogUrl")
   val mediumImage: Rep[String] = column[String]("mediumImage")
-  def * = (ID, blogName, blogLabel, blogArticle, blogImage, thumbImage, active, date, clickCount, blogUrl,mediumImage) <> (BlogET.tupled, BlogET.unapply)
+  def * = (ID, blogName, blogArticle, blogImage, thumbImage, active, date, clickCount, blogUrl,mediumImage) <> (BlogET.tupled, BlogET.unapply)
 
 } 

@@ -26,8 +26,8 @@ class TagController @Inject()(cc: ControllerComponents)
     extends AbstractController(cc) {
   def listByTag(slug: String) = Action {
     implicit request: Request[AnyContent] =>
-      val ID = BlogDb.Blogs.table
-        .filter(x => x.blogLabel === slug)
+      val ID = BlogDb.Tags.table
+        .filter(x => x.slug === slug)
         .map(x => x.ID)
         .result
         .headOption
@@ -39,27 +39,30 @@ class TagController @Inject()(cc: ControllerComponents)
               .join(BlogDb.Categories.table)
               .on(_.categoryid === _.ID))
           .on(_.ID === _._1.blogid)
-          .filter(x => x._1.blogLabel === slug)
-          .sortBy(x => x._1.date.desc)
+          .joinLeft(BlogDb.BlogTags.table
+          .join(BlogDb.Tags.table)
+          .on(_.tagID === _.ID))
+          .on(_._1.ID === _._1.blogID)
+          .filter(x => x._2.map(y => y._2.tagName === slug))
+          .sortBy(x => x._1._1.date.desc)
           .take(15)
           .result
           .Save
           .map(article => {
             val outer = Jsoup
-              .parse(article._1.blogArticle)
+              .parse(article._1._1.blogArticle)
               .text()
             new ArticleCatDTO {
               Article = new BlogDTO {
-                blogName = article._1.blogName;
-                blogLabel = article._1.blogLabel;
-                date = article._1.date;
-                clickCount = article._1.clickCount;
-                mediumImage = article._1.mediumImage;
-                blogUrl = article._1.blogUrl;
+                blogName = article._1._1.blogName;
+                date = article._1._1.date;
+                clickCount = article._1._1.clickCount;
+                mediumImage = article._1._1.mediumImage;
+                blogUrl = article._1._1.blogUrl;
                 //category = article._2.map(y => y._2.categoryName).getOrElse("");
               };
               CategoryName =
-                article._2.map(y => y._2.categoryName).getOrElse("")
+                article._1._2.map(c => c._2.categoryName).getOrElse("")
               slug = article._2.map(y => y._2.slug).getOrElse("")
               Description = outer.substring(0,
                                             if (outer.length >= 150) 150

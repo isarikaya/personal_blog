@@ -1,10 +1,10 @@
 package transfers
 
 import play.api.libs.json.Json
+import entities._
 
 case class BlogDTO(var ID: Long = 0,
                    var blogName: String = "",
-                   var blogLabel: String = "",
                    var blogArticle: String = "",
                    var blogImage: String = "",
                    var thumbImage: String = "",
@@ -15,7 +15,9 @@ case class BlogDTO(var ID: Long = 0,
                    var blogUrl: String = "",
                    var mediumImage: String = "",
                    var category: String = "",
-                   var parentCategory: String = "")
+                   var parentCategory: String = "",
+                   var etiket: String = "",
+                   var dada : String = "")
 
 object BlogDTO {
   implicit val reads = Json.reads[BlogDTO]

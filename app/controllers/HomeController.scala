@@ -81,7 +81,6 @@ class HomeController @Inject()(cc: ControllerComponents)
         new ArticleCatDTO {
           Article = new BlogDTO {
             blogName = blogCat._1.blogName;
-            blogLabel = blogCat._1.blogLabel;
             date = blogCat._1.date;
             dateString = blogCat._1.date.toDateString;
             blogUrl = blogCat._1.blogUrl;
@@ -140,49 +139,55 @@ class HomeController @Inject()(cc: ControllerComponents)
       val article = BlogDb.Blogs.table
         .joinLeft(BlogDb.BlogCategories.table)
         .on(_.ID === _.blogid)
-        .filter(x => x._2.map(a => a.blogid === ID.get))
+        .joinLeft(BlogDb.BlogTags.table
+        .join(BlogDb.Tags.table)
+        .on(_.tagID === _.ID))
+        .on(_._1.ID === _._1.blogID)
+        .filter(x => x._1._2.map(a => a.blogid === ID.get))
         .result
         .headOption
         .Save
         .map(article =>
           new ArticleCatDTO {
             Article = new BlogDTO {
-              blogImage = article._1.blogImage;
-              blogName = article._1.blogName;
-              blogLabel = article._1.blogLabel;
-              date = article._1.date;
-              clickCount = article._1.clickCount;
-              blogArticle = article._1.blogArticle;
+              blogImage = article._1._1.blogImage;
+              blogName = article._1._1.blogName;
+              //blogLabel = article._1.blogLabel;
+              date = article._1._1.date;
+              clickCount = article._1._1.clickCount;
+              blogArticle = article._1._1.blogArticle;
+             //tagSlug = article._1.tagSlug;
+             etiket = article._2.map(e => e._2.tagName).getOrElse("");
             };
             CategoryName = "";
-            Tag = article._1.blogLabel.split(",").toSeq
+            //Tag = article._1.blogLabel.split(",").toSeq
         })
 
       if (article.isDefined) {
-        val labels = article.get.Article.blogLabel.split(",").toSeq
+        val labels = article.get.Article.etiket
         var relateds: Seq[ArticleCatDTO] = Seq()
-        for (label <- labels) {
-          if (relateds.length < 3) {
-            relateds = relateds ++ BlogDb.Blogs.table
-              .filter(x =>
-                x.ID =!= article.get.Article.ID &&
-                  (x.blogLabel like "%" + label.trim + "%"))
-              .take(3 - relateds.length)
-              .result
-              .Save
-              .map(x =>
-                new ArticleCatDTO {
-                  Article = new BlogDTO {
-                    blogName = x.blogName;
-                    blogLabel = x.blogLabel;
-                    date = x.date;
-                    blogUrl = x.blogUrl;
-                    thumbImage = x.thumbImage;
-                    clickCount = x.clickCount;
-                  };
-              })
-          }
-        }
+        // for (label <- labels) {
+        //   if (relateds.length < 3) {
+        //     relateds = relateds ++ BlogDb.Blogs.table.joinLeft(BlogDb.BlogTags.table.join(BlogDb.Tags.table).on(_.tagID === _.ID))
+        //     .on(_.ID === _._1.blogID)
+        //       .filter(x =>
+        //         x._1.ID =!= article.get.Article.ID &&
+        //           (x._2.map( t => t._2.tagName) like "%" + label.trim + "%"))
+        //       .take(3 - relateds.length)
+        //       .result
+        //       .Save
+        //       .map(x =>
+        //         new ArticleCatDTO {
+        //           Article = new BlogDTO {
+        //             blogName = x._1.blogName;
+        //             date = x._1.date;
+        //             blogUrl = x._1.blogUrl;
+        //             thumbImage = x._1.thumbImage;
+        //             clickCount = x._1.clickCount;
+        //           };
+        //       })
+        //   }
+        // }
 
         Ok(views.html.blogDetail.index(article.get, relateds, before, after))
       } else {
