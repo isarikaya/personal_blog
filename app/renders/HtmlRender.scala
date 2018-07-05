@@ -16,6 +16,7 @@ object HtmlRender {
     val trend = BlogDb.Blogs.table.sortBy(x => x.clickCount.desc).take(5).result.Save
     val blog = BlogDb.Blogs.table.sortBy(x => x.date).result.Save
     // val labels = BlogDb.Blogs.table.map(x => x.blogLabel).take(300).result.Save
+    val tags = BlogDb.Tags.table.sortBy(x => x.date.desc).take(10).result.Save
     val catBlogCount = BlogDb.Categories.table
     .joinLeft(BlogDb.BlogCategories.table)
     .on(_.ID === _.categoryid)
@@ -32,7 +33,7 @@ object HtmlRender {
     //     }
     //   })
     // })
-    return views.html.layout.partial.navBarr._sideBar(latest, trend, catBlogCount)//storedTags
+    return views.html.layout.partial.navBarr._sideBar(latest, trend,tags, catBlogCount)//storedTags
   }
   def header(): Html = {
     val menu = BlogDb.Categories.table.filter(x => !x.parentid.isDefined)

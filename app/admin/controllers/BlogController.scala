@@ -85,7 +85,7 @@ class BlogController @Inject()(auth: AuthAction, cc: ControllerComponents)
         val label = data.tag.split(",")
         label.foreach(lbl => {
           val slug = seo seoTitle (lbl)
-          val newTag = new TagET(0, lbl, slug)
+          val newTag = new TagET(0, lbl, slug,DateTime.now.getMillis)
           val addTag = BlogDb.Tags.Insert(newTag).Save
           BlogDb.BlogTags.Insert(new BlogTagET(0, res, addTag)).Save
           if (addTag > 0) {
@@ -304,7 +304,7 @@ class BlogController @Inject()(auth: AuthAction, cc: ControllerComponents)
           }
           data.tag.split(",").foreach(lbl => {
             val slug = seo seoTitle (lbl)
-            val newTag = new TagET(0, lbl, slug)
+            val newTag = new TagET(0, lbl, slug,DateTime.now.getMillis)
             val tres = BlogDb.Tags.Insert(newTag).Save
             BlogDb.BlogTags.Insert(new BlogTagET(0, blog.get._1.ID, tres)).Save
             if (tres > 0) {

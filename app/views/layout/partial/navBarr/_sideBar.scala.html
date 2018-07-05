@@ -1,4 +1,4 @@
-@(latest: Seq[entities.BlogET], trend: Seq[entities.BlogET], category: Seq[(String,String, Int)])
+@(latest: Seq[entities.BlogET], trend: Seq[entities.BlogET], tags: Seq[entities.TagET], category: Seq[(String,String, Int)])
 
 @import views.DateExtension._
 
@@ -118,7 +118,10 @@
                 <div class="row mt-40">
                     <div class="col-md-12 col-sm-12 col-lg-12 sm-mt-60 columns">
                         <div class="zm-tagcloud">
-                        <a href="s">sdsdssdsds</a>
+                            @for(label <-tags){
+                                <a href="@label.slug">@label.tagName</a>
+                            }
+                        
                         </div>
                     </div>
                 </div>
