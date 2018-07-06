@@ -63,10 +63,18 @@
                                 <nav class="zm-pagination ptb-40 mtb-10 text-center border-bottom border-top">
                                     <ul class="page-numbers clearfix">
                                         @if(before.isDefined) {
-                                        <li class="pull-left"><a class="prev page-numbers" href="@before.get.blogUrl">@before.get.blogName</a></li>
-                                        } 
+                                            @if(before.get.blogName.length >= 30){
+                                                <li class="pull-left"><a class="prev page-numbers" href="@before.get.blogUrl">@before.get.blogName.substring(0,27)...</a></li>
+                                            } else{
+                                                <li class="pull-left"><a class="prev page-numbers" href="@before.get.blogUrl">@before.get.blogName</a></li>
+                                            }
+                                        }
                                         @if(after.isDefined) {
-                                        <li class="pull-right"><a class="next page-numbers" href="@after.get.blogUrl">@after.get.blogName</a></li>
+                                            @if(after.get.blogName.length >= 30){
+                                                <li class="pull-right"><a class="next page-numbers" href="@after.get.blogUrl">@after.get.blogName.substring(0,27)...</a></li>
+                                            } else{
+                                                <li class="pull-right"><a class="prev page-numbers" href="@after.get.blogUrl">@after.get.blogName</a></li>
+                                            }
                                         }
                                     </ul>
                                 </nav>
