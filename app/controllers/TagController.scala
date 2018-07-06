@@ -24,7 +24,21 @@ import org.jsoup._
 @Singleton
 class TagController @Inject()(cc: ControllerComponents)
     extends AbstractController(cc) {
-  def listByTag(slug: String) = Action {
+      def index(slug: String) = Action { implicit request: Request[AnyContent] =>
+  val ID = BlogDb.Tags.table
+        .filter(x => x.slug === slug)
+        .map(x => x.ID)
+        .result
+        .headOption
+        .Save
+      if(ID.isDefined) {
+        Ok(views.html.tag.index(slug))
+      }
+      else{
+        NotFound("")
+      }
+  }
+  def listByTag(slug: String,counter: Int) = Action {
     implicit request: Request[AnyContent] =>
       val ID = BlogDb.Tags.table
         .filter(x => x.slug === slug)
@@ -34,19 +48,20 @@ class TagController @Inject()(cc: ControllerComponents)
         .Save
       if (ID.isDefined) {
         val tagArticles = BlogDb.Blogs.table
-          .joinLeft(
-            BlogDb.BlogCategories.table
-              .join(BlogDb.Categories.table)
-              .on(_.categoryid === _.ID))
+          .joinLeft(BlogDb.BlogCategories.table
+            .join(BlogDb.Categories.table)
+            .on(_.categoryid === _.ID))
           .on(_.ID === _._1.blogid)
           .joinLeft(BlogDb.BlogTags.table
-          .join(BlogDb.Tags.table)
-          .on(_.tagID === _.ID))
+            .join(BlogDb.Tags.table)
+            .on(_.tagID === _.ID))
           .on(_._1.ID === _._1.blogID)
           .filter(x => x._2.map(y => y._2.tagName === slug))
           .sortBy(x => x._1._1.date.desc)
-          .take(15)
-          .result.Save
+          .drop(10 * (counter -1))
+          .take(10)
+          .result
+          .Save
           .map(article => {
             val outer = Jsoup
               .parse(article._1._1.blogArticle)
@@ -66,9 +81,11 @@ class TagController @Inject()(cc: ControllerComponents)
               Description = outer.substring(0,
                                             if (outer.length >= 150) 150
                                             else outer.length) + "...";
+              tagSlug = article._2.map(ts => ts._2.slug).getOrElse("");
+              Tag = article._2.map(ts => ts._2.tagName).getOrElse("");
             }
           })
-        Ok(views.html.tag.index(tagArticles))
+        Ok(Json.toJson(tagArticles))
       } else {
         NotFound("error!")
       }

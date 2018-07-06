@@ -7,7 +7,7 @@ case class ArticleCatDTO(var CategoryName: String = "",
                          var Article: BlogDTO = null,
                          var Description: String = "",
                          var Tag: String = "",
-                         var tagSlug:String ="")
+                         var tagSlug: String ="")
 object ArticleCatDTO {
   implicit val reads = Json.reads[ArticleCatDTO]
   implicit val writes = Json.writes[ArticleCatDTO]
