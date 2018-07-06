@@ -48,9 +48,10 @@ class CategoryController @Inject()(cc: ControllerComponents)
         .Save
       if (ID.isDefined) {
         val articles = BlogDb.Blogs.table
-          .joinLeft(BlogDb.BlogCategories.table)
-          .on(_.ID === _.blogid)
-          .filter(x => x._2.map(y => y.categoryid === ID.get))
+          .joinLeft(BlogDb.BlogCategories.table
+          .join(BlogDb.Categories.table).on(_.categoryid === _.ID))
+          .on(_.ID === _._1.blogid)
+          .filter(x => x._2.map(y => y._1.categoryid === ID.get))
           .sortBy(x => x._1.date.desc)
           .drop(10 * (counter - 1))
           .take(10)
@@ -68,7 +69,8 @@ class CategoryController @Inject()(cc: ControllerComponents)
                 mediumImage = article._1.mediumImage;
                 blogUrl = article._1.blogUrl;
               }
-              CategoryName = "-";
+              CategoryName = article._2.map(c => c._2.categoryName).getOrElse("")
+              catSlug = article._2.map(c => c._2.slug).getOrElse("")
               Description = outer.substring(0,
                                             if (outer.length >= 150) 150
                                             else outer.length) + "...";

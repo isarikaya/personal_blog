@@ -141,7 +141,7 @@ class BlogController @Inject()(auth: AuthAction, cc: ControllerComponents)
             (x._2
               .map(y => y._1._2.categoryName) like "%" + data.search + "%")
               || (x._2
-                .flatMap(y => y._2.map(z => z.categoryName)) like "%" + data.search + "%"))
+                .flatMap(y => y._2.map(z => z.categoryName)) like "%" + data.search + "%") || (x._1.blogName like "%" + data.search + "%"))
         data.ordercolumn match {
           case 0 =>
             data.orderdir match {

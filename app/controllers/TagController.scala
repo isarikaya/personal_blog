@@ -46,8 +46,7 @@ class TagController @Inject()(cc: ControllerComponents)
           .filter(x => x._2.map(y => y._2.tagName === slug))
           .sortBy(x => x._1._1.date.desc)
           .take(15)
-          .result
-          .Save
+          .result.Save
           .map(article => {
             val outer = Jsoup
               .parse(article._1._1.blogArticle)
@@ -62,8 +61,8 @@ class TagController @Inject()(cc: ControllerComponents)
                 //category = article._2.map(y => y._2.categoryName).getOrElse("");
               };
               CategoryName =
-                article._1._2.map(c => c._2.categoryName).getOrElse("")
-              slug = article._2.map(y => y._2.slug).getOrElse("")
+                article._1._2.map(c => c._2.categoryName).getOrElse("");
+              catSlug = article._1._2.map(a => a._2.slug).getOrElse("");
               Description = outer.substring(0,
                                             if (outer.length >= 150) 150
                                             else outer.length) + "...";

@@ -82,7 +82,7 @@
                 </div>
                 <aside class="subscribe-form text-center sidebar">
                     <h3 class="uppercase zm-post-title">Soru sor</h3>
-                    <p>Proje ve sorunlarına yardımcı olabilmem için buradan bana hızlı bir şekilde soru sorabilirsin.
+                    <p>Proje ve sorunlarına yardımcı olabilmem için bana hızlı bir şekilde soru sorabilirsin.
                     </p>
                     <form id="validate" role="form" method="POST" action="/question/insert">
                     </form>
@@ -119,9 +119,8 @@
                     <div class="col-md-12 col-sm-12 col-lg-12 sm-mt-60 columns">
                         <div class="zm-tagcloud">
                             @for(label <-tags){
-                                <a href="@label.slug">@label.tagName</a>
+                                <a href="/tag/@label.slug">@label.tagName</a>
                             }
-                        
                         </div>
                     </div>
                 </div>

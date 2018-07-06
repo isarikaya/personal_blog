@@ -89,7 +89,7 @@ class HomeController @Inject()(cc: ControllerComponents)
             // category = blogCat._2.map(y => y._2.categoryName).getOrElse("");
           }
           CategoryName = blogCat._2.map(y => y._2.categoryName).getOrElse("");
-          slug = blogCat._2.map(s => s._2.slug).getOrElse("");
+          catSlug = blogCat._2.map(s => s._2.slug).getOrElse("");
           Description = outer.substring(0,
                                         if (outer.length >= 150) 150
                                         else outer.length) + "...";
@@ -140,8 +140,8 @@ class HomeController @Inject()(cc: ControllerComponents)
         .joinLeft(BlogDb.BlogCategories.table)
         .on(_.ID === _.blogid)
         .joinLeft(BlogDb.BlogTags.table
-        .join(BlogDb.Tags.table)
-        .on(_.tagID === _.ID))
+          .join(BlogDb.Tags.table)
+          .on(_.tagID === _.ID))
         .on(_._1.ID === _._1.blogID)
         .filter(x => x._1._2.map(a => a.blogid === ID.get))
         .result
@@ -152,44 +152,56 @@ class HomeController @Inject()(cc: ControllerComponents)
             Article = new BlogDTO {
               blogImage = article._1._1.blogImage;
               blogName = article._1._1.blogName;
-              //blogLabel = article._1.blogLabel;
               date = article._1._1.date;
               clickCount = article._1._1.clickCount;
               blogArticle = article._1._1.blogArticle;
-             //tagSlug = article._1.tagSlug;
-             etiket = article._2.map(e => e._2.tagName).getOrElse("");
             };
             CategoryName = "";
-            //Tag = article._1.blogLabel.split(",").toSeq
         })
-
+      val tag = BlogDb.Blogs.table
+        .joinLeft(BlogDb.BlogTags.table)
+        .on(_.ID === _.blogID)
+        .join(BlogDb.Tags.table)
+        .on(_._2.map(x => x.tagID) === _.ID)
+        .filter(x => x._1._2.map(a => a.blogID === ID.get))
+        .result
+        .Save
+        .map(articleTag =>
+          new ArticleCatDTO {
+            Tag = articleTag._2.tagName
+            tagSlug = articleTag._2.slug
+        })
       if (article.isDefined) {
-        val labels = article.get.Article.etiket
+        val labels = tag.map(z => z.Tag)
         var relateds: Seq[ArticleCatDTO] = Seq()
-        // for (label <- labels) {
-        //   if (relateds.length < 3) {
-        //     relateds = relateds ++ BlogDb.Blogs.table.joinLeft(BlogDb.BlogTags.table.join(BlogDb.Tags.table).on(_.tagID === _.ID))
-        //     .on(_.ID === _._1.blogID)
-        //       .filter(x =>
-        //         x._1.ID =!= article.get.Article.ID &&
-        //           (x._2.map( t => t._2.tagName) like "%" + label.trim + "%"))
-        //       .take(3 - relateds.length)
-        //       .result
-        //       .Save
-        //       .map(x =>
-        //         new ArticleCatDTO {
-        //           Article = new BlogDTO {
-        //             blogName = x._1.blogName;
-        //             date = x._1.date;
-        //             blogUrl = x._1.blogUrl;
-        //             thumbImage = x._1.thumbImage;
-        //             clickCount = x._1.clickCount;
-        //           };
-        //       })
-        //   }
-        // }
+        for (label <- labels) {
+          if (relateds.length < 3) {
+            relateds = relateds ++ BlogDb.Blogs.table
+              .joinLeft(
+                BlogDb.BlogTags.table
+                  .join(BlogDb.Tags.table)
+                  .on(_.tagID === _.ID))
+              .on(_.ID === _._1.blogID)
+              .filter(x => x._1.ID =!= article.get.Article.ID && x._2.map(y => y._2.tagName like "%" +label+ "%"))
+              .take(6 - relateds.length)
+              .result
+              .Save
+              .map(x =>
+                new ArticleCatDTO {
+                  Article = new BlogDTO {
+                    blogName = x._1.blogName;
+                    date = x._1.date;
+                    blogUrl = x._1.blogUrl;
+                    thumbImage = x._1.thumbImage;
+                    clickCount = x._1.clickCount;
+                  };
+              })
+          }
+        }
 
-        Ok(views.html.blogDetail.index(article.get, relateds, before, after))
+        Ok(
+          views.html.blogDetail
+            .index(article.get, tag, relateds, before, after))
       } else {
         NotFound("not found 404")
       }
