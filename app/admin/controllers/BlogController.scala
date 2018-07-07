@@ -193,8 +193,7 @@ class BlogController @Inject()(auth: AuthAction, cc: ControllerComponents)
             new BlogDTO {
               val denem = x._1.blogName
               ID = x._1.ID;
-              blogName = denem.substring(0,
-                                        if (denem.length >= 30) 29
+              blogName = denem.substring(0,if (denem.length >= 30) 30
                                         else denem.length) + "...";
               date = x._1.date;
               clickCount = x._1.clickCount;
@@ -220,13 +219,14 @@ class BlogController @Inject()(auth: AuthAction, cc: ControllerComponents)
       .Save
       .map(bigList => {
         var label = ""
+        var a =","
         BlogDb.BlogTags.table
           .filter(x => x.blogID === bigList._1.ID)
           .join(BlogDb.Tags.table)
           .on(_.tagID === _.ID)
           .result
           .Save
-          .map(t => label += t._2.tagName)
+          .map(t => label += a+ t._2.tagName)
         new BlogDTO {
           ID = bigList._1.ID;
           blogName = bigList._1.blogName;

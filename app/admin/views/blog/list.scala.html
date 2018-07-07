@@ -35,7 +35,7 @@
                     $("[name='Name']").val(data.blogName)
                     $("[name='tag']").val(data.etiket)
                     CKEDITOR.instances.editor1.setData(data.blogArticle)
-                    var lbl = data.etiket.split(" ");
+                    var lbl = data.etiket.split(",");
                     $.each(lbl, function (index, value) {
                         $('[name="tag"]').tagsinput('add', value)
                     });

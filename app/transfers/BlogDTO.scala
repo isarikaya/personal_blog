@@ -16,8 +16,7 @@ case class BlogDTO(var ID: Long = 0,
                    var mediumImage: String = "",
                    var category: String = "",
                    var parentCategory: String = "",
-                   var etiket: String = "",
-                   var dada : String = "")
+                   var etiket: String = "")
 
 object BlogDTO {
   implicit val reads = Json.reads[BlogDTO]
