@@ -72,6 +72,11 @@
             }
         });
     };
+</script>
+<script>
+    $("#myModal").on("hidden.bs.modal", function(){
+        $('#clearTags').tagsinput('removeAll')
+});
 </script>} @admin.views.html.layout.main("artifidea") {
 <div class="row">
     <div class="col-lg-12">
