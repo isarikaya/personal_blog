@@ -191,8 +191,11 @@ class BlogController @Inject()(auth: AuthAction, cc: ControllerComponents)
           .Save
           .map(x =>
             new BlogDTO {
+              val denem = x._1.blogName
               ID = x._1.ID;
-              blogName = x._1.blogName;
+              blogName = denem.substring(0,
+                                        if (denem.length >= 30) 29
+                                        else denem.length) + "...";
               date = x._1.date;
               clickCount = x._1.clickCount;
               category = x._2
