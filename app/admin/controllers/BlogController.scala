@@ -213,7 +213,12 @@ class BlogController @Inject()(auth: AuthAction, cc: ControllerComponents)
     val blog = BlogDb.Blogs.table
       .joinLeft(BlogDb.BlogTags.table)
       .on(_.ID === _.blogID)
-      .filter(x => x._1.ID === ID && x._2.map(t => t.blogID) === ID)
+      .joinLeft(BlogDb.BlogCategories.table
+      .join(BlogDb.Categories.table)
+      .on(_.categoryid === _.ID)
+      .joinLeft(BlogDb.Categories.table)
+              .on(_._2.parentid === _.ID))
+      .filter(x => x._1._1.ID === ID && x._1._2.map(t => t.blogID) === ID && x._2.map(c => c._1._1.blogid) === ID)
       .result
       .headOption
       .Save
@@ -221,17 +226,19 @@ class BlogController @Inject()(auth: AuthAction, cc: ControllerComponents)
         var label = ""
         var a =","
         BlogDb.BlogTags.table
-          .filter(x => x.blogID === bigList._1.ID)
+          .filter(x => x.blogID === bigList._1._1.ID)
           .join(BlogDb.Tags.table)
           .on(_.tagID === _.ID)
           .result
           .Save
           .map(t => label += a+ t._2.tagName)
         new BlogDTO {
-          ID = bigList._1.ID;
-          blogName = bigList._1.blogName;
-          blogArticle = bigList._1.blogArticle;
+          ID = bigList._1._1.ID;
+          blogName = bigList._1._1.blogName;
+          blogArticle = bigList._1._1.blogArticle;
           etiket = label;
+          parentCategory = bigList._2.map(z => z._1._2.categoryName).getOrElse("")
+          CATID =bigList._2.map(y => y._1._2.ID).getOrElse(0.toLong)
         }
       })
     Ok(Json.toJson(blog))

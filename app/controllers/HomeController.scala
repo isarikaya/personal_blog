@@ -182,7 +182,7 @@ class HomeController @Inject()(cc: ControllerComponents)
                   .join(BlogDb.Tags.table)
                   .on(_.tagID === _.ID))
               .on(_.ID === _._1.blogID)
-              .filter(x => x._1.ID =!= article.get.Article.ID && x._2.map(y => y._2.tagName like "%" +label+ "%"))
+              .filter(x => x._2.map(y => y._2.tagName like "%" +label+ "%") && x._1.ID =!= ID)
               .take(6 - relateds.length)
               .result
               .Save
@@ -208,5 +208,11 @@ class HomeController @Inject()(cc: ControllerComponents)
     } else {
       NotFound("error!")
     }
+  }
+  def hakkimda() = Action { implicit request: Request[AnyContent] =>
+    Ok(views.html.hakkimda())
+  }
+  def gizlilik() = Action { implicit request: Request[AnyContent] =>
+    Ok(views.html.gizlilik())
   }
 }

@@ -8,9 +8,8 @@
                                 <nav class="header-top-menu zm-secondary-menu">
                                     <ul>
                                         <li><a href="/">Anasayfa</a></li>
-                                        <li style="padding-left: 1px"><a href="yazarlar.html">Yazarlar</a></li>
-                                        <li style="padding-left: 1px"><a href="hakkinda.html">Hakkımızda</a></li>
-                                        <li style="padding-left: 1px"><a href="iletisim.html">İletişim</a></li>
+                                        <li style="padding-left: 1px"><a href="/hakkimda">Hakkimda</a></li>
+                                        <li style="padding-left: 1px"><a href="/gizlilik">GİZLİLİK</a></li>
                                     </ul>
                                 </nav>
                             </div>
@@ -63,10 +62,10 @@
                                 <div class="global-row">
                                     <div class="global-cell">
                                         <div class="logo">
-                                            <a href="index.html">
-                                                <img src="assets/frontend/blog/blogs/images/logo/1.png" alt="main logo">
+                                            <a href="/">
+                                                <img src="assets/frontend/blog/blogs/images/logo/ailogo/logo.jpg" alt="main logo">
                                             </a>
-                                            <p class="site-desc">News blog & Magazine Template</p>
+                                            <p class="site-desc">Türkiye'nin en büyük yazılım ve teknoloji bloğu</p>
                                         </div>
                                     </div>
                                 </div>
@@ -106,7 +105,6 @@
                                                         </ul>
                                                     </li>
                                                     }
-                                                    <li><a href="contact.html">Contact</a></li>
                                                 </ul>
                                             </nav>
                                         </div>
@@ -143,78 +141,16 @@
                         </div>
                         <nav id="mobile_dropdown">
                             <ul>
-                                <li><a href="index.html">Home</a>
-                                    <ul>
-                                        <li><a href="index-3.html">Newspaper</a>
-                                            <ul>
-                                                <li><a href="index.html">Newspaper 1</a></li>
-                                                <li><a href="index-3.html">Newspaper 2</a></li>
-                                                <li><a href="index-7.html">Newspaper 3</a></li>
+                                <li><a href="/">Anasayfa</a>
+                                    @for(dto <- menu){
+                                        <li class="drop"><a>@dto.Category.categoryName</a>
+                                            <ul class="dropdown">
+                                                @for(subCategory <- dto.SubCategories) {
+                                                    <li><a href="/category/@subCategory.slug">@subCategory.categoryName</a></li>
+                                                }
                                             </ul>
                                         </li>
-                                        <li><a href="index-2.html">Magazine</a>
-                                            <ul class="dropdown level2">
-                                                <li><a href="index-2.html">Magazine 1</a></li>
-                                                <li><a href="index-7.html">Magazine 2</a></li>
-                                                <li><a href="index-10.html">Magazine 3</a></li>
-                                            </ul>
-                                        </li>
-                                        <li><a href="index-4.html">Blogs</a>
-                                            <ul class="dropdown level2">
-                                                <li><a href="index-5.html">Blog demo 1</a></li>
-                                                <li><a href="index-6.html">Blog demo 2</a></li>
-                                                <li><a href="index-8.html">Blog demo 3</a></li>
-                                                <li><a href="index-9.html">Blog demo 4</a></li>
-                                                <li><a href="index-11.html">Blog demo 5</a></li>
-                                                <li><a href="index-12.html">Blog demo 6</a></li>
-                                                <li><a href="index-13.html">Blog demo 7</a></li>
-                                                <li><a href="index-14.html">Blog demo 8</a></li>
-                                            </ul>
-                                        </li>
-                                        <li><a href="index-15.html">Travel</a></li>
-                                        <li><a href="index-16.html">Lifestyle</a></li>
-                                        <li><a href="index-17.html">Sports</a></li>
-                                    </ul>
-                                </li>
-                                <li><a href="#">Blog</a>
-                                    <ul>
-                                        <li><a href="blog-single-image.html">Single Blog image 1</a></li>
-                                        <li><a href="blog-single-image-2.html">Single Blog image 2</a></li>
-                                        <li><a href="blog-single-video.html">Single Blog Video 1</a></li>
-                                        <li><a href="blog-single-video-2.html">Single Blog Video 2</a></li>
-                                        <li><a href="blog-single-audio.html">Single Blog Audio 1</a></li>
-                                        <li><a href="blog-single-audio-2.html">Single Blog Audio 2</a></li>
-                                    </ul>
-                                </li>
-                                <li><a href="#">Pages</a>
-                                    <ul>
-                                        <li><a href="#">Blog</a>
-                                            <ul>
-                                                <li><a href="blog-single-image.html">Single Blog image 1</a></li>
-                                                <li><a href="blog-single-image-2.html">Single Blog image 2</a></li>
-                                                <li><a href="blog-single-video.html">Single Blog Video 1</a></li>
-                                                <li><a href="blog-single-video-2.html">Single Blog Video 2</a></li>
-                                                <li><a href="blog-single-audio.html">Single Blog Audio 1</a></li>
-                                                <li><a href="blog-single-audio-2.html">Single Blog Audio 2</a></li>
-
-                                            </ul>
-                                        </li>
-                                        <li><a href="archive.html">Archive 1</a></li>
-                                        <li><a href="archive-2.html">Archive 2</a></li>
-                                        <li><a href="contact.html">Contact 1</a></li>
-                                        <li><a href="contact-2.html">Contact 2</a></li>
-                                        <li><a href="registration.html">Registration</a></li>
-                                        <li><a href="404.html">Page Not found (404)</a></li>
-                                    </ul>
-                                </li>
-                                <li><a href="shop.html">Shop</a>
-                                    <ul>
-                                        <li><a href="shop.html">Shop</a></li>
-                                        <li><a href="shop-details.html">Shop Details</a></li>
-                                        <li><a href="cart.html">Cart page</a></li>
-                                    </ul>
-                                </li>
-                                <li><a href="contact.html">Contact</a></li>
+                                        }
                             </ul>
                         </nav>
                     </div>
